@@ -28,10 +28,23 @@ def merge(arr1: array, arr2: array)->array:
 
     return arr_fin
 
+def mergesort(arr_in: array)->array:
+
+    #n=len(arr)
+    if len(arr_in)==1:
+        return arr_in
+
+    else:
+        arr_inleft, arr_inright = mergesort(arr_in[:int(len(arr_in)/2)]), mergesort(arr_in[int(len(arr_in)/2):])
+        return merge(arr_inleft,arr_inright)
+
 
 if __name__=="__main__":
 
-    arr1=array("i",[1,4,5,8])
-    arr2=array("i",[2,3,6,7])
+    #arr1=array("i",[1,4,5,8])
+    #arr2=array("i",[2,3,6,7])
 
-    print(merge(arr1,arr2))
+    #print(merge(arr1,arr2))
+
+    arr_in=array("i",[5,4,1,8,7,2,6,3])
+    print(mergesort(arr_in))
