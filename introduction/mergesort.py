@@ -11,10 +11,12 @@ def merge(arr1: array, arr2: array)->array:
     for k in range(n):
         #checking if one of the iterators is at the end
         if i==int(len(arr1)):
-            arr_fin.insert(k,arr2[j])
+            #arr_fin.insert(k,arr2[j])
+            arr_fin.extend(arr2[j:])
             return arr_fin
         elif j==int(len(arr2)):
-            arr_fin.insert(k,arr1[i])
+            #arr_fin.insert(k,arr1[i])
+            arr_fin.extend(arr1[i:])
             return arr_fin
        
         if arr1[i] < arr2[j]:
