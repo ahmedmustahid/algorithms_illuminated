@@ -1,0 +1,61 @@
+total time required in brute force 2.86102294921875e-06
+n value 1 arr array('i', [4])
+locals
+ {'arr': array('i', [4]), 'n': 1}
+locals
+ {'arr': array('i', [4, 3]), 'n': 2, 'leftarr': array('i', [4]), 'leftinv': 0}
+n value 1 arr array('i', [3])
+locals
+ {'arr': array('i', [3]), 'n': 1}
+locals
+ {'arr': array('i', [4, 3]), 'n': 2, 'leftarr': array('i', [4]), 'leftinv': 0, 'rightarr': array('i', [3]), 'rightinv': 0}
+in merge splitinv 0
+inside 2nd j
+{'arr1': array('i', [4]), 'arr2': array('i', [3]), 'n': 2, 'arr_fin': array('i', [3]), 'i': 0, 'j': 1, 'splitinv': 1, 'k': 0}
+inside 1st j
+splitinv before 1
+{'arr1': array('i', [4]), 'arr2': array('i', [3]), 'n': 2, 'arr_fin': array('i', [3, 4]), 'i': 0, 'j': 1, 'splitinv': 1, 'k': 1}
+splitinv 1
+========================================
+locals
+ {'arr': array('i', [4, 3]), 'n': 2, 'leftarr': array('i', [4]), 'leftinv': 0, 'rightarr': array('i', [3]), 'rightinv': 0, 'mergearr': array('i', [3, 4]), 'splitinv': 1}
+locals
+ {'arr': array('i', [4, 3, 2, 1]), 'n': 4, 'leftarr': array('i', [3, 4]), 'leftinv': 1}
+n value 1 arr array('i', [2])
+locals
+ {'arr': array('i', [2]), 'n': 1}
+locals
+ {'arr': array('i', [2, 1]), 'n': 2, 'leftarr': array('i', [2]), 'leftinv': 0}
+n value 1 arr array('i', [1])
+locals
+ {'arr': array('i', [1]), 'n': 1}
+locals
+ {'arr': array('i', [2, 1]), 'n': 2, 'leftarr': array('i', [2]), 'leftinv': 0, 'rightarr': array('i', [1]), 'rightinv': 0}
+in merge splitinv 0
+inside 2nd j
+{'arr1': array('i', [2]), 'arr2': array('i', [1]), 'n': 2, 'arr_fin': array('i', [1]), 'i': 0, 'j': 1, 'splitinv': 1, 'k': 0}
+inside 1st j
+splitinv before 1
+{'arr1': array('i', [2]), 'arr2': array('i', [1]), 'n': 2, 'arr_fin': array('i', [1, 2]), 'i': 0, 'j': 1, 'splitinv': 1, 'k': 1}
+splitinv 1
+========================================
+locals
+ {'arr': array('i', [2, 1]), 'n': 2, 'leftarr': array('i', [2]), 'leftinv': 0, 'rightarr': array('i', [1]), 'rightinv': 0, 'mergearr': array('i', [1, 2]), 'splitinv': 1}
+locals
+ {'arr': array('i', [4, 3, 2, 1]), 'n': 4, 'leftarr': array('i', [3, 4]), 'leftinv': 1, 'rightarr': array('i', [1, 2]), 'rightinv': 1}
+in merge splitinv 0
+inside 2nd j
+{'arr1': array('i', [3, 4]), 'arr2': array('i', [1, 2]), 'n': 4, 'arr_fin': array('i', [1]), 'i': 0, 'j': 1, 'splitinv': 2, 'k': 0}
+in merge splitinv 2
+inside 2nd j
+{'arr1': array('i', [3, 4]), 'arr2': array('i', [1, 2]), 'n': 4, 'arr_fin': array('i', [1, 2]), 'i': 0, 'j': 2, 'splitinv': 4, 'k': 1}
+inside 1st j
+splitinv before 4
+{'arr1': array('i', [3, 4]), 'arr2': array('i', [1, 2]), 'n': 4, 'arr_fin': array('i', [1, 2, 3, 4]), 'i': 0, 'j': 2, 'splitinv': 4, 'k': 2}
+splitinv 6
+========================================
+locals
+ {'arr': array('i', [4, 3, 2, 1]), 'n': 4, 'leftarr': array('i', [3, 4]), 'leftinv': 1, 'rightarr': array('i', [1, 2]), 'rightinv': 1, 'mergearr': array('i', [1, 2, 3, 4]), 'splitinv': 6}
+numInv  8
+sortedarr array('i', [1, 2, 3, 4])
+total time required in sort_and_count_inv 7.677078247070312e-05

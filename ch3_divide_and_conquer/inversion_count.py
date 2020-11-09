@@ -1,6 +1,9 @@
 
 from array import array
 from time import time
+from inspect import currentframe,getframeinfo
+frameinfo=getframeinfo(currentframe())
+
 def brute_force(arr: array)->int:
 
     numInv=0
@@ -11,71 +14,102 @@ def brute_force(arr: array)->int:
     return numInv
 
 
-def merge_and_count_splitinv(leftarr,rightarr):
-    print(f"leftarr {leftarr}")
-    print(f"rightarr {rightarr}")
-    #breakpoint()
-    n=int(len(leftarr)+len(rightarr))
-    mergearr=array("f",[])
+def merge_and_count_splitinv(arr1: array, arr2: array)->(array,int):
+    
+    #if arr2[0]==0:
+    #    arr2.pop(0) 
+    n = len(arr1)+len(arr2)
+    arr_fin= array("i",[])
 
     i,j,splitinv=0,0,0
-
-    for _ in range(n):
-        print(f"i {i}")
-        print(f"j {j}")
-        print(f"mergearr {mergearr}")
-        if leftarr[i] < rightarr[j]:
-            mergearr.append(leftarr[i])
+    
+    for k in range(n):
+        #checking if one of the iterators is at the end
+        if i==int(len(arr1)):
+            print("inside 1st i")
+            print(locals())
+            arr_fin.extend(arr2[j:])
+            return arr_fin,splitinv
+        elif j==int(len(arr2)):
+            #arr_fin.insert(k,arr1[i])
+            arr_fin.extend(arr1[i:])
+            print("inside 1st j")
+            print(f"splitinv before {splitinv}")
+            print(locals())
+            if len(arr1[i:])>1:
+                splitinv+=len(arr1[i:])
+            print(f"splitinv {splitinv}")
+            return arr_fin,splitinv
+       
+        if arr1[i] <= arr2[j]:
+            arr_fin.insert(k,arr1[i])
             i+=1
+            print("inside 2nd j")
+            print(locals())
+
         else:
-            mergearr.append(rightarr[j])
+            arr_fin.insert(k,arr2[j])
+            if not arr2[j]==0:
+                print(f"in merge splitinv {splitinv}")
+                splitinv+=len(arr1)-i
             j+=1
-            splitinv+= n/2 - i +1
-
-    return mergearr, splitinv
-
+            print("inside 2nd j")
+            print(locals())
+    return arr_fin,splitinv
 
 
 
 def sort_and_count_inv(arr):
     
-
+    
     n=int(len(arr))
+    if not n%2==0 and not n==1:
+        arr.insert(0,0)
+        print(f"locals\n {locals()}")
+        #sort_and_count_inv(arr) 
     if  n==1:
-        print(f"n value {n} arr {arr}")
+        print(f"n value {len(arr)} arr {arr}")
+        print(f"locals\n {locals()}")
         return arr,0
     else:
-        #breakpoint()
-        #print(f"n/2 {int(n/2)} ")
-
-        #n=int(len(arr))
-        #n=int(len(arr))
-        print(f"arr[:{int(n/2)}] {arr[:int(n/2)]}")
         leftarr,leftinv = sort_and_count_inv(arr[:int(len(arr)/2)])
-        #n=int(len(arr))
-        print(f"arr[{int(n/2)}:] {arr[int(n/2):]}")
-        #n=int(len(arr))
+        print(f"locals\n {locals()}")
         rightarr,rightinv=sort_and_count_inv(arr[int(len(arr)/2):])
-        
-        print(f"leftarr {leftarr} leftinv {leftinv}")
-        print(f"rightarr {rightarr} rightinv {rightinv}")
-        mergearr, splitinv= merge_and_count_splitinv(leftarr,rightarr)
+        print(f"locals\n {locals()}")
 
-        return (mergearr, leftinv+rightinv+splitinv)
+        #if rightarr[0]==0:
+        #    arr.pop(0)
+        #del_zero=lambda arr:(arr.pop(0) if arr[0]==0 else arr)
+        ##del_zero(leftarr)
+        #del_zero(rightarr)
+
+        mergearr, splitinv= merge_and_count_splitinv(leftarr,rightarr)
+        if mergearr[0]==0:
+            mergearr.pop(0)
+        #del_zero(mergearr)
+        print("=="*20)
+        print(f"locals\n {locals()}")
+        return mergearr,leftinv+rightinv+splitinv
 
 
 
   
-arrtest=array("i",[1,3,5,2,4,6])
+#arrtest=array("i",[3,5,2])
+#arrtest=array("i",[1,3,5,2,4,6])
+arrtest= array("i",range(1,5))
+arrtest.reverse()
+#arrtest= array("i",range(1,10000))
 start=time()
 numInv=brute_force(arrtest)
-assert numInv==3
+#assert numInv==3
 end=time()
 print(f"total time required in brute force {end -start}")
 
 start=time()
-_,numInv=sort_and_count_inv(arrtest)
-assert numInv==3
+sortedarr,numInv=sort_and_count_inv(arrtest)
+print("numInv ",numInv)
+print(f"sortedarr {sortedarr}")
+#assert numInv==3
 end=time()
 print(f"total time required in sort_and_count_inv {end -start}")
 
