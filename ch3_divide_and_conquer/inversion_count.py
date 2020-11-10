@@ -26,35 +26,35 @@ def merge_and_count_splitinv(arr1: array, arr2: array)->(array,int):
     for k in range(n):
         #checking if one of the iterators is at the end
         if i==int(len(arr1)):
-            print("inside 1st i")
-            print(locals())
+            #print("inside 1st i")
+            #print(locals())
             arr_fin.extend(arr2[j:])
             return arr_fin,splitinv
         elif j==int(len(arr2)):
             #arr_fin.insert(k,arr1[i])
             arr_fin.extend(arr1[i:])
-            print("inside 1st j")
-            print(f"splitinv before {splitinv}")
-            print(locals())
-            if len(arr1[i:])>1:
-                splitinv+=len(arr1[i:])
-            print(f"splitinv {splitinv}")
+            #print("inside 1st j")
+            #print(f"splitinv before {splitinv}")
+            #print(locals())
+            #if len(arr1[i:])>1:
+            #    splitinv+=len(arr1[i+1:])
+            #print(f"splitinv after {splitinv}")
             return arr_fin,splitinv
        
         if arr1[i] <= arr2[j]:
             arr_fin.insert(k,arr1[i])
             i+=1
-            print("inside 2nd j")
-            print(locals())
+            #print("inside 2nd j")
+            #print(locals())
 
         else:
             arr_fin.insert(k,arr2[j])
             if not arr2[j]==0:
-                print(f"in merge splitinv {splitinv}")
+                #print(f"in merge splitinv {splitinv}")
                 splitinv+=len(arr1)-i
             j+=1
-            print("inside 2nd j")
-            print(locals())
+            #print("inside 2nd j")
+            #print(locals())
     return arr_fin,splitinv
 
 
@@ -65,17 +65,18 @@ def sort_and_count_inv(arr):
     n=int(len(arr))
     if not n%2==0 and not n==1:
         arr.insert(0,0)
-        print(f"locals\n {locals()}")
+        #print(f"locals\n {locals()}")
         #sort_and_count_inv(arr) 
     if  n==1:
-        print(f"n value {len(arr)} arr {arr}")
-        print(f"locals\n {locals()}")
+        #print(f"n value {len(arr)} arr {arr}")
+        #print(f"locals\n {locals()}")
         return arr,0
     else:
+        #print(f"locals\n {locals()}")
         leftarr,leftinv = sort_and_count_inv(arr[:int(len(arr)/2)])
-        print(f"locals\n {locals()}")
+        #print(f"locals\n {locals()}")
         rightarr,rightinv=sort_and_count_inv(arr[int(len(arr)/2):])
-        print(f"locals\n {locals()}")
+        #print(f"locals\n {locals()}")
 
         #if rightarr[0]==0:
         #    arr.pop(0)
@@ -87,8 +88,8 @@ def sort_and_count_inv(arr):
         if mergearr[0]==0:
             mergearr.pop(0)
         #del_zero(mergearr)
-        print("=="*20)
-        print(f"locals\n {locals()}")
+        #print("=="*20)
+        #print(f"locals\n {locals()}")
         return mergearr,leftinv+rightinv+splitinv
 
 
@@ -96,21 +97,21 @@ def sort_and_count_inv(arr):
   
 #arrtest=array("i",[3,5,2])
 #arrtest=array("i",[1,3,5,2,4,6])
-arrtest= array("i",range(1,5))
+#arrtest= array("i",range(1,15))
+arrtest= array("i",range(1,10000))
 arrtest.reverse()
-#arrtest= array("i",range(1,10000))
 start=time()
 numInv=brute_force(arrtest)
-#assert numInv==3
 end=time()
+print(f"numInv from brute force {numInv}")
 print(f"total time required in brute force {end -start}")
 
 start=time()
-sortedarr,numInv=sort_and_count_inv(arrtest)
-print("numInv ",numInv)
-print(f"sortedarr {sortedarr}")
-#assert numInv==3
+_,numInv=sort_and_count_inv(arrtest)
+#sortedarr,numInv=sort_and_count_inv(arrtest)
 end=time()
+print("numInv from sort_and_count_inv ",numInv)
+#print(f"sortedarr {sortedarr}")
 print(f"total time required in sort_and_count_inv {end -start}")
 
 
