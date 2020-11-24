@@ -94,24 +94,24 @@ def sort_and_count_inv(arr):
 
 
 
-  
-#arrtest=array("i",[3,5,2])
-#arrtest=array("i",[1,3,5,2,4,6])
-#arrtest= array("i",range(1,15))
-arrtest= array("i",range(1,10000))
-arrtest.reverse()
-start=time()
-numInv=brute_force(arrtest)
-end=time()
-print(f"numInv from brute force {numInv}")
-print(f"total time required in brute force {end -start}")
-
-start=time()
-_,numInv=sort_and_count_inv(arrtest)
-#sortedarr,numInv=sort_and_count_inv(arrtest)
-end=time()
-print("numInv from sort_and_count_inv ",numInv)
-#print(f"sortedarr {sortedarr}")
-print(f"total time required in sort_and_count_inv {end -start}")
-
-
+if __name__=="__main__":
+    #arrtest=array("i",[3,5,2])
+    #arrtest=array("i",[1,3,5,2,4,6])
+    #arrtest= array("i",range(1,15))
+    arrtest= array("i",range(1,10000))
+    arrtest.reverse()
+    start=time()
+    numInv=brute_force(arrtest)
+    end=time()
+    print(f"numInv from brute force {numInv}")
+    print(f"total time required in brute force {end -start}")
+    
+    start=time()
+    _,numInv=sort_and_count_inv(arrtest)
+    #sortedarr,numInv=sort_and_count_inv(arrtest)
+    end=time()
+    print("numInv from sort_and_count_inv ",numInv)
+    #print(f"sortedarr {sortedarr}")
+    print(f"total time required in sort_and_count_inv {end -start}")
+    
+    
