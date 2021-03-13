@@ -8,11 +8,15 @@ def find_and_delete(filename,randline):
 
     with open(filename, "r", encoding="utf-8") as orig_file_obj:
         with open("tmp.txt", "w", encoding="utf-8") as new_file_obj:
-            orig_text = orig_file_obj.read()
-            randline=randline+"\n"
-            new_text = orig_text.replace(randline, "")
+            #orig_text = orig_file_obj.read()
+            for line in orig_file_obj:
+                regrand=r""+randline+"[\n]?"
+                if not bool(re.findall(regrand,line)):
+                    new_file_obj.write(line)
+
+            #randline=randline+"\n"
             #new_text = orig_text.replace(randline, "")
-            new_file_obj.write(new_text)
+            #new_file_obj.write(new_text)
 
     shutil.copyfile("tmp.txt", filename)
     os.remove("tmp.txt")
@@ -53,8 +57,8 @@ def random_line(filename):
 
 if __name__=="__main__":
     
-    filename="test_case1.txt" 
-    #filename="KargerMinCut_challenge_case.txt" 
+    #filename="test_case1.txt" 
+    filename="KargerMinCut_challenge_case.txt" 
     line_count =sum(line.count('\n') for line in open(filename,"r"))
 
     while line_count>2:
