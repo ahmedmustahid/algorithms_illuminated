@@ -61,44 +61,63 @@ if __name__=="__main__":
     #filename="KargerMinCut_challenge_case.txt" 
     line_count =sum(line.count('\n') for line in open(filename,"r"))
     
-    head1,node1='2','3'
-    temp=[]
-    with open(filename,"r") as f:
-        for line in f:
-            line=line.strip("/n").split()
-            
-            ll= LinkedList(line)
-            if ll.head.data==node1:
-                ll.remove_node(ll.head.data)
-                ll.add_first(Node(head1))
-             
-            prevnode=ll.head
-            for i,node in enumerate(ll):
-                if i==0:
-                    continue
-                if node.data==node1 and node.data!=ll.head.data:
-                    ll.remove_node(node.data)         
-                    ll.add_after(prevnode.data,Node(head1))
-                    if ll[i].data==head1:
-                        prevnode.next = ll[i].next
-                elif node.data==ll.head.data:
-                    prevnode.next=node.next
-                prevnode=node
-                
-            if ll[0].data==head1:
-                temp.append(ll)
-    print("in temp list")
-    for t in temp:
-        print(t)
-    ll1,ll2=temp[0],temp[1]
-    m=[]
-    for i,l1 in enumerate(ll1):
-        m.append(l1)
-        for j,l2 in enumerate(ll2):
-            if i==j and i>0 and j>0:
-                m.append(l2)
+    while line_count>=2:
+        randline = random_line(filename)
+        randline=randline.strip("/n").split()
+        
+        head1=randline[0]
+        node1=random.choice(randline)
+        while node1==head1:
+            node1=random.choice(randline)
 
-    print(m)
+        print(f"head1 {head1} node1 {node1}")
+        temp=[]
+        with open(filename,"r") as f:
+            with open("tmp.txt", "w", encoding="utf-8") as new_file_obj:
+                for line in f:
+                    line=line.strip("/n").split()
+                    
+                    ll= LinkedList(line)
+                    if ll.head.data==node1:
+                        ll.remove_node(ll.head.data)
+                        ll.add_first(Node(head1))
+                    #print("change head") 
+                    #print(ll)
+                    prevnode=ll.head
+                    for i,node in enumerate(ll):
+                        #if i==0:
+                        #    continue
+                        if i>0 and node.data==node1 and node.data!=ll.head.data:
+                            ll.remove_node(node.data)         
+                            ll.add_after(prevnode.data,Node(head1))
+                            if ll[i].data==ll.head.data:
+                                prevnode.next = ll[i].next
+                        elif i>0 and node.data==ll.head.data:
+                            prevnode.next=node.next
+                        prevnode=node
+                        
+                    if ll[0].data==head1:
+                        temp.append(ll)
+                    else:
+                        print(*ll,file=new_file_obj)
+                print("in temp list")
+                for t in temp:
+                    print(t)
+                ll1,ll2=temp[0],temp[1]
+                m=[]
+                for i,l1 in enumerate(ll1):
+                    m.append(l1.data)
+                    for j,l2 in enumerate(ll2):
+                        if i==j and i>0 and j>0:
+                            m.append(l2.data)
+
+                print(' '.join(m),file=new_file_obj)
+                print(m)
+        
+        
+        shutil.copy('tmp.txt',filename)
+        os.remove('tmp.txt')
+        line_count =sum(line.count('\n') for line in open(filename,"r"))
 
     sys.exit()
 

@@ -26,8 +26,8 @@ class LinkedList:
             nodelist.append(node.data)
             node = node.next
         #nodelist.append("None")
-        return " ".join(nodelist)
         #return "->".join(nodelist)
+        return " ".join(nodelist)
 
     def __iter__(self):
         node = self.head
