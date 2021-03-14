@@ -1,7 +1,7 @@
 import random
 import mmap
-import re,os,shutil
-
+import re,os,shutil,sys
+from linkedlist import LinkedList,Node
 
 def find_and_delete(filename,randline):
     
@@ -57,13 +57,57 @@ def random_line(filename):
 
 if __name__=="__main__":
     
-    #filename="test_case1.txt" 
-    filename="KargerMinCut_challenge_case.txt" 
+    filename="test_case1.txt" 
+    #filename="KargerMinCut_challenge_case.txt" 
     line_count =sum(line.count('\n') for line in open(filename,"r"))
+    
+    head1,node1='2','3'
+    temp=[]
+    with open(filename,"r") as f:
+        for line in f:
+            line=line.strip("/n").split()
+            
+            ll= LinkedList(line)
+            if ll.head.data==node1:
+                ll.remove_node(ll.head.data)
+                ll.add_first(Node(head1))
+             
+            prevnode=ll.head
+            for i,node in enumerate(ll):
+                if i==0:
+                    continue
+                if node.data==node1 and node.data!=ll.head.data:
+                    ll.remove_node(node.data)         
+                    ll.add_after(prevnode.data,Node(head1))
+                    if ll[i].data==head1:
+                        prevnode.next = ll[i].next
+                elif node.data==ll.head.data:
+                    prevnode.next=node.next
+                prevnode=node
+                
+            if ll[0].data==head1:
+                temp.append(ll)
+    print("in temp list")
+    for t in temp:
+        print(t)
+    ll1,ll2=temp[0],temp[1]
+    m=[]
+    for i,l1 in enumerate(ll1):
+        m.append(l1)
+        for j,l2 in enumerate(ll2):
+            if i==j and i>0 and j>0:
+                m.append(l2)
+
+    print(m)
+
+    sys.exit()
+
 
     while line_count>2:
         randline = random_line(filename)
         print(f"randline {randline}")
+        
+
         find_and_delete(filename,randline)
         line_count =sum(line.count('\n') for line in open(filename,"r"))
         print(f"line_count {line_count}")
