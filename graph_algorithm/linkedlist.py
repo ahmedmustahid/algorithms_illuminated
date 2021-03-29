@@ -25,8 +25,9 @@ class LinkedList:
         while node is not None:
             nodelist.append(node.data)
             node = node.next
-        nodelist.append("None")
-        return "->".join(nodelist)
+        #nodelist.append("None")
+        #return "->".join(nodelist)
+        return " ".join(nodelist)
 
     def __iter__(self):
         node = self.head
@@ -34,6 +35,27 @@ class LinkedList:
         while node is not None:
             yield node
             node=node.next 
+    
+    def __getitem__(self,nodenum):
+        for i,node in enumerate(self):
+            if i==nodenum:
+                return node
+    
+    def __len__(self):
+        return sum(1 for i in self)
+
+    def __add__(self,other):
+        if len(self) < len(other):
+            ll_obj=self
+        elif len(self) >= len(other):
+            ll_obj=other
+            other=self
+
+        for i,node in enumerate(ll_obj):
+            self.add_after(other[i].data,node)
+
+        return self
+
 
     def add_first(self,node):
         node.next = self.head
@@ -60,19 +82,6 @@ class LinkedList:
         
         raise Exception(f"{targetnode} is not in the list")
 
-    #def add_before(self,targetnode,newnode):
-    #    if self.head is None:
-    #        raise Exception("Empty list")
-    #    
-    #    prevnode=self.head
-    #    for current_node in self:
-    #        print(f"current_node {current_node.data}")
-    #        if current_node.data==targetnode:
-    #            prevnode.next=newnode
-    #            newnode.next=current_node
-    #        prevnode=current_node
-
-    #    raise Exception(f"{targetnode} not in the list")
 
     def add_before(self, target_node_data, new_node):
         if self.head is None:
@@ -110,19 +119,24 @@ class LinkedList:
 
 if __name__=="__main__":
     ll1 = LinkedList(nodes=["a","b","c","d"])
-    ll1.add_first(Node("first"))
-    ll1.add_last(Node("last"))
-    ll1.add_after("b",Node("after"))
-    ll1.add_before("b",Node("before"))
-    print(ll1)
-
+    print(ll1[2])
+    print("here") 
     for l in ll1:
         print(l)
     
-    f = open("test_case1.txt","r")
 
-    for line in f:
-        print(line)
+
+
+    #ll1.add_first(Node("first"))
+    #ll1.add_last(Node("last"))
+    #ll1.add_after("b",Node("after"))
+    #ll1.add_before("b",Node("before"))
+    #print(ll1)
+
+    #f = open("test_case1.txt","r")
+
+    #for line in f:
+    #    print(line)
     
 
 
