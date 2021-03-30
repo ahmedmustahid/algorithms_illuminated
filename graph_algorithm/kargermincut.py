@@ -36,8 +36,7 @@ if __name__=="__main__":
     #with open("test_case1.txt", "r") as f:
     #    lines = f.readlines()
     #    #line_count=sum()
-    f1 = open("test_case1.txt","r+")
-
+    f1 = open("test_case1.txt","r")
     gline=(line for line in f1 if not line==randline)
      
     with open("test_case2.txt","w") as f2:
