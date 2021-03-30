@@ -9,9 +9,8 @@ def count_lines(afile,size=65536):
         if not b: break
         yield b
 
-with open("test_case2.txt", "r") as f:
-    print(sum(bl.count("\n") for bl in count_lines(f)))
-sys.exit()
+    with open("test_case_base.txt", "r") as f:
+        print(sum(bl.count("\n") for bl in count_lines(f)))
 
 def random_line(afile):
     line = next(afile)
@@ -39,20 +38,20 @@ def random_line(afile):
 
 if __name__=="__main__":
 
-    with open("test_case1.txt", "r") as f:
+    with open("test_case_base.txt", "r") as f:
         randline = random_line(f)
         print(f"randline {randline}")
 
-    with open("test_case1.txt", "r") as f:
-        lines = f.readlines()
-        total_lines=sum(bl.count("\n") for bl in lines)
+    #with open("test_case1.txt", "r") as f:
+    #    lines = f.readlines()
+    #    total_lines=sum(bl.count("\n") for bl in lines)
     #with open("test_case1.txt", "r") as f:
     #    lines = f.readlines()
     #    #line_count=sum()
-    f1 = open("test_case1.txt","r")
+    f1 = open("test_case_base.txt","r")
     gline=(line for line in f1 if not line==randline)
 
-    with open("test_case2.txt","w") as f2:
+    with open("test_case_result.txt","w") as f2:
         for line in gline:
             print(f"gline {line}")
             f2.write(line)
@@ -70,7 +69,7 @@ if __name__=="__main__":
                 #line=line+"\n"
                 lines.write(line)
 
-    print(f"total_lines {total_lines}")
+    #print(f"total_lines {total_lines}")
     sys.exit()
 
     with open("test_case1.txt", "r") as f:
