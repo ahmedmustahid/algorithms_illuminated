@@ -59,14 +59,6 @@ if __name__=="__main__":
         randline = random_line(f)
         print(f"randline {randline}")
 
-    #f1 = open("test_case_base.txt","r")
-    #gline=(line for line in f1 if not line==randline)
-
-    #with open("test_case_result.txt","w") as f2:
-    #    for line in gline:
-    #        print(f"gline {line}")
-    #        f2.write(line)
-    #f1.close()
     
     randlinelist=randline.split()
     
@@ -78,6 +70,16 @@ if __name__=="__main__":
     #head,other ="2","3"
 
     contract(ll1,head,other)
+
+
+    fbase = open("test_case_base.txt","r")
+    gline=(line for line in fbase if not line==randline)
+
+    with open("test_case_result.txt","w") as fresult:
+        for line in gline:
+
+            fresult.write(line)
+    fbase.close()
 
     
 
