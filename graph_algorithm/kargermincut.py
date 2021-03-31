@@ -43,6 +43,9 @@ def contract(ll: LinkedList,head,other):
         elif ll.head.data==other:
             if elem.data==head:
                 ll.remove_node(targetnode_data=head)
+
+                ll.remove_node(targetnode_data=other)
+                ll.add_first(node=Node(head))
         else:
             if elem.data==other:
                 ll.remove_node(targetnode_data=other)
@@ -50,6 +53,7 @@ def contract(ll: LinkedList,head,other):
             prevnode=elem
 
     print(f"linkedlist after removal is {ll}")
+    #return ll
 
 
 
@@ -64,22 +68,34 @@ if __name__=="__main__":
     
     head, other=randlinelist[0],random.choice(randlinelist[1:])
     print(f"random choice head {head} other {other}")    
-    ll1 = LinkedList(nodes=randlinelist)
+    #ll1 = LinkedList(nodes=randlinelist)
 
     #ll1 = LinkedList(nodes="1 2 3 4".split())
     #head,other ="2","3"
 
-    contract(ll1,head,other)
+    #contract(ll1,head,other)
 
 
-    fbase = open("test_case_base.txt","r")
-    gline=(line for line in fbase if not line==randline)
+    #fbase = open("test_case_base.txt","r")
+    #gline=(line for line in fbase if not line==randline)
+    
+    temp=[]
+    with open("test_case_base.txt","r") as fbase:
+        with open("test_case_result.txt","w") as fresult:
+            for line in fbase:
+                ll = LinkedList(nodes=line.split())
+                contract(ll=ll,head=head,other=other)
+                if not ll.head.data==head:
+                    fresult.write(repr(ll)+"\n")
+                else:
+                    temp.append(repr(ll))
+    
+    
+    fresult =open("test_case_result.txt","a")
+        
+    print(temp[0],temp[1].strip(head),sep="",file=fresult)
 
-    with open("test_case_result.txt","w") as fresult:
-        for line in gline:
-
-            fresult.write(line)
-    fbase.close()
+    #fbase.close()
 
     
 
