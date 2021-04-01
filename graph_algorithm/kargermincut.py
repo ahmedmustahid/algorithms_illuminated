@@ -111,7 +111,7 @@ def recurse():
 if __name__=="__main__":
     
     recurse()
-    
+    shutil.copy("test_case_base_orig.txt","test_case_base.txt")    
 
     
 
