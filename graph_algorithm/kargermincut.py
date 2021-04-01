@@ -1,6 +1,7 @@
 from linkedlist import Node,LinkedList
 import re,sys,shutil
 import random
+from array import array
 
 
 def count_lines(afile,size=65536):
@@ -13,12 +14,12 @@ def count_lines(afile,size=65536):
 def random_line(afile):
     line = next(afile)
     flag = re.match("\n+",line)
-    print(f"is newline? {flag}")
+    #print(f"is newline? {flag}")
     while flag is not None:
-        print(f"line {line}")
+        #print(f"line {line}")
         line = re.sub("\n+","",line)
         flag = re.match("\n+",line)
-        print(f"flag is {flag}")
+        #print(f"flag is {flag}")
 
     for num, aline in enumerate(afile, 2):
         if random.randrange(num):
@@ -30,7 +31,7 @@ def random_line(afile):
     return line
     
 def contract(ll: LinkedList,head,other):
-    print(f"linkedlist is {ll}")
+    #print(f"linkedlist is {ll}")
     
     prevnode=ll.head
     for elem in ll:
@@ -56,7 +57,7 @@ def contract(ll: LinkedList,head,other):
                 ll.remove_node(targetnode_data=other)
             prevnode=elem
 
-    print(f"linkedlist after removal is {ll}")
+    #print(f"linkedlist after removal is {ll}")
 #<<<<<<< HEAD
     #return ll
 
@@ -69,13 +70,13 @@ def recurse():
     if total_linum>2:
         with open(basefile, "r") as f:
             randline = random_line(f)
-            print(f"randline {randline}")
+            #print(f"randline {randline}")
 
         
         randlinelist=randline.split()
         
         head, other=randlinelist[0],random.choice(randlinelist[1:])
-        print(f"random choice head {head} other {other}")    
+        #print(f"random choice head {head} other {other}")    
         #ll1 = LinkedList(nodes=randlinelist)
 
         #ll1 = LinkedList(nodes="1 2 3 4".split())
@@ -109,6 +110,10 @@ def recurse():
         #fbase.close()
         recurse()
 
+    else:
+        #print(f"linum={total_linum}")
+        return
+
     #else:
 
         
@@ -119,8 +124,21 @@ def recurse():
 
 if __name__=="__main__":
     
-    recurse()
-    shutil.copy("test_case_base_orig.txt","test_case_base.txt")    
+    iteration_num=100
+    i=0
+    temp=array('I',[])
+    while(i<100):
+        recurse()
+        shutil.copy("test_case_base_orig.txt","test_case_base.txt")    
+        resultfile="test_case_result.txt"
+        cutnum =len(open(resultfile).readline().split()[1:])
+        temp.append(cutnum)
+        print(f"cutnum {cutnum}")
+        i+=1
+
+    print(f"minimum cut={min(temp)}")
+
+
 
     
 
