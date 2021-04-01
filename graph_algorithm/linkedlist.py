@@ -78,9 +78,10 @@ class LinkedList:
             if current_node.data==targetnode:
                 newnode.next = current_node.next
                 current_node.next = newnode
-                return 
+                newnode=Node(newnode.data)
+                #return 
         
-        raise Exception(f"{targetnode} is not in the list")
+        #raise Exception(f"{targetnode} is not in the list")
 
 
     def add_before(self, target_node_data, new_node):
@@ -111,7 +112,8 @@ class LinkedList:
         for current_node in self:
             if current_node.data==targetnode_data:
                 prevnode.next = current_node.next
-                return
+                continue
+                #return
 
             prevnode=current_node
 

@@ -41,16 +41,23 @@ def contract(ll: LinkedList,head,other):
         elif ll.head.data==other:
             if elem.data==head:
                 ll.remove_node(targetnode_data=head)
+#<<<<<<< HEAD
 
                 ll.remove_node(targetnode_data=other)
                 ll.add_first(node=Node(head))
+#        else:
+#            if elem.data==other:
+#                ll.add_after(targetnode=prevnode.data,newnode=Node(head))
+#=======
         else:
             if elem.data==other:
-                ll.add_after(targetnode=prevnode.data,newnode=Node(head))
+                ll.add_after(targetnode=other,newnode=Node(head))
+#>>>>>>> 1c70fb6
                 ll.remove_node(targetnode_data=other)
             prevnode=elem
 
     print(f"linkedlist after removal is {ll}")
+#<<<<<<< HEAD
     #return ll
 
 def recurse():
@@ -105,6 +112,8 @@ def recurse():
     #else:
 
         
+#=======
+#>>>>>>> 1c70fb6
 
 
 
@@ -124,5 +133,45 @@ if __name__=="__main__":
 
 
 
+#<<<<<<< HEAD
+#=======
+#    with open("test_case_base.txt", "r") as f:
+#        randline = random_line(f)
+#        print(f"randline {randline}")
+#
+#    #f1 = open("test_case_base.txt","r")
+#    #gline=(line for line in f1 if not line==randline)
+#
+#    #with open("test_case_result.txt","w") as f2:
+#    #    for line in gline:
+#    #        print(f"gline {line}")
+#    #        f2.write(line)
+#    #f1.close()
+#    
+#    randlinelist=randline.split()
+#    
+#    #head, other=randlinelist[0],random.choice(randlinelist[1:])
+#    #print(f"random choice head {head} other {other}")    
+#    #ll1 = LinkedList(nodes=randlinelist)
+#
+#    ll1 = LinkedList(nodes="8 6 6 7".split())
+#    head,other ="7","6"
+#
+#    contract(ll1,head,other)
+#
+#    
+#
+#    
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#>>>>>>> 1c70fb6
 
 
