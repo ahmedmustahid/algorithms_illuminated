@@ -92,6 +92,10 @@ def recurse():
         with open(basefile,"r") as fbase:
             with open(resultfile,"w") as fresult:
                 for line in fbase:
+                    if re.match('\n+',line):
+                        continue
+                    if len(line.split())==1:
+                        continue
                     ll = LinkedList(nodes=line.split())
                     contract(ll=ll,head=head,other=other)
                     if not ll.head.data==head:
@@ -101,8 +105,12 @@ def recurse():
         
         
         fresult =open(resultfile,"a")
-        if temp:
+
+        if len(temp)==2:
             print(temp[0],temp[1].strip(head),sep="",file=fresult)
+        elif len(temp)==1:
+            print(temp[0],file=fresult)
+
         fresult.close()
 
         shutil.copyfile(resultfile,basefile)
