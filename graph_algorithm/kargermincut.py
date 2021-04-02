@@ -60,7 +60,7 @@ def recurse():
     hitnum+=1
     seednum+=1
     random.seed(seednum)
-    print(f"start seednumfin {seednum}")
+    #print(f"start seednumfin {seednum}")
     basefile="test_case_base.txt"
     resultfile="test_case_result.txt"
 
@@ -69,13 +69,13 @@ def recurse():
     if total_linum>2:
         with open(basefile, "r") as f:
             randline = random_line(f)
-            print(f"randline {randline}")
+            #print(f"randline {randline}")
 
         
         randlinelist=randline.split()
         
         head, other=randlinelist[0],random.choice(randlinelist[1:])
-        print(f"head {head} other {other}") 
+        #print(f"head {head} other {other}") 
         temp=[]
         with open(basefile,"r") as fbase:
             with open(resultfile,"w") as fresult:
@@ -90,8 +90,8 @@ def recurse():
                     #if len(ll)>1:
                     #if ll.head.next is not None:
                     if not ll.head.data==head:
-                        print(f"hitnum {hitnum}")
-                        print(ll)
+                        #print(f"hitnum {hitnum}")
+                        #print(ll)
                         fresult.write(repr(ll)+"\n")
                     else:
                         #print(ll)
@@ -105,12 +105,12 @@ def recurse():
             string1= temp[0]
             string2=re.sub(rf'\b{head}\b','',temp[1])
             print(string1,string2,sep="",file=fresult)
-            print(string1,string2,sep="")
-            print("end\n")
+            #print(string1,string2,sep="")
+            #print("end\n")
         elif len(temp)==1:
             print(temp[0],file=fresult)
-            print(f"temp0 {temp[0]}")
-            print("end\n")
+            #print(f"temp0 {temp[0]}")
+            #print("end\n")
 
         fresult.close()
 
