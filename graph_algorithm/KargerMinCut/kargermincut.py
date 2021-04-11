@@ -16,19 +16,19 @@ def random_line(afile):
     seednum+=1
     random.seed(seednum)
     line = next(afile)
-    flag = re.match("\n+",line)
+    flag = re.match(r"[\n]+",line)
     #print(f"is newline? {flag}")
     while flag is not None:
         #print(f"line {line}")
-        line = re.sub("\n+","",line)
-        flag = re.match("\n+",line)
+        line = re.sub(r"[\n]+","",line)
+        flag = re.match(r"[\n]+",line)
         #print(f"flag is {flag}")
 
     for num, aline in enumerate(afile, 2):
         if random.randrange(num):
             #print(f"inside randrange {num}")
             continue
-        if not re.match(r"\n+",aline):
+        if not re.match(r"[\n]+",aline):
             line = aline
             #print(f"num {num} aline {aline}")
     return line
