@@ -22,6 +22,8 @@ def slowWay(fileName):
     #pprint.pprint(ldict)
     print("--- %s seconds ---" % (time.time() - startTime))
 
+    return ldict
+
 
 def fasterWay(fileName):
 
@@ -42,9 +44,11 @@ def fasterWay(fileName):
     #pprint.pprint(d)
     #pprint.pprint(d[temp])
     print("--- %s seconds ---" % (time.time() - startTime))
+    return d
 
 
 fileName ="sccChallenge.txt" 
 #fileName ="test_cases/testCase1.txt" 
 #slowWay(fileName)
-fasterWay(fileName)
+newDict = fasterWay(fileName)
+print(len(newDict))
