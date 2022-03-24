@@ -1,4 +1,4 @@
-#import pprint
+import pprint
 import time
 def slowWay(fileName):
     startTime = time.time()
@@ -40,6 +40,7 @@ def fasterWay(fileName):
                 d[temp] = [head]
     
     #pprint.pprint(d)
+    #pprint.pprint(d[temp])
     print("--- %s seconds ---" % (time.time() - startTime))
 
 
