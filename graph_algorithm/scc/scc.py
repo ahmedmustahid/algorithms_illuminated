@@ -47,8 +47,9 @@ def fasterWay(fileName):
     return d
 
 
-fileName ="sccChallenge.txt" 
-#fileName ="test_cases/testCase1.txt" 
+#fileName ="sccChallenge.txt" 
+fileName ="test_cases/testCase1.txt" 
 #slowWay(fileName)
 newDict = fasterWay(fileName)
 print(len(newDict))
+pprint.pprint(newDict)
