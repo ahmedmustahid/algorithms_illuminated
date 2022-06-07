@@ -26,11 +26,11 @@ numSCC = 0
 scc = collections.defaultdict(list)
 
 def reverseGraph(graph):
-    reversedGraphh = collections.defaultdict(lambda: {'children': [], 'explored': False})
+    reversedGraph = collections.defaultdict(lambda: {'children': [], 'explored': False})
     for vertex in graph:
         for child in graph[vertex]['children']:
-            reversedGraphh[child]['children'].append(vertex)
-    return reversedGraphh
+            reversedGraph[child]['children'].append(vertex)
+    return reversedGraph
 
 def dfs(graph, vertex):
     global currentLabel

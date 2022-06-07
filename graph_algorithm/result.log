@@ -1,140 +1,23 @@
 in toposort 4
-entering at 4
-child 1 of vertex 4
-entering at 1
-child 7 of vertex 1
-entering at 7
-child 4 of vertex 7
-child 4 already explored
-child 9 of vertex 7
-entering at 9
-child 6 of vertex 9
-entering at 6
-child 3 of vertex 6
-entering at 3
-child 9 of vertex 3
-child 9 already explored
-exiting from 3
-child 8 of vertex 6
-entering at 8
-child 2 of vertex 8
-entering at 2
-child 5 of vertex 2
-entering at 5
-child 8 of vertex 5
-child 8 already explored
-exiting from 5
-exiting from 2
-exiting from 8
-exiting from 6
-exiting from 9
-exiting from 7
-exiting from 1
-exiting from 4
-defaultdict(<function reverseGraph.<locals>.<lambda> at 0x7f042102d550>,
+in toposort 7
+in toposort 1
+defaultdict(<function reverseGraph.<locals>.<lambda> at 0x7f9a94e88550>,
             {1: {'children': [7],
-                 'explored': True,
-                 'label': 2},
+                 'explored': False},
              2: {'children': [5],
-                 'explored': True,
-                 'label': 7},
+                 'explored': True},
              3: {'children': [9],
-                 'explored': True,
-                 'label': 9},
+                 'explored': True},
              4: {'children': [1],
-                 'explored': True,
-                 'label': 1},
+                 'explored': False},
              5: {'children': [8],
-                 'explored': True,
-                 'label': 8},
+                 'explored': True},
              6: {'children': [3, 8],
                  'explored': True,
-                 'label': 5},
+                 'label': 4},
              7: {'children': [4, 9],
-                 'explored': True,
-                 'label': 3},
+                 'explored': False},
              8: {'children': [2],
-                 'explored': True,
-                 'label': 6},
+                 'explored': True},
              9: {'children': [6],
-                 'explored': True,
-                 'label': 4}})
-defaultdict(<function graphFromFile.<locals>.<lambda> at 0x7f042105f3a0>,
-            {1: {'children': [4],
-                 'explored': False,
-                 'label': 2},
-             2: {'children': [8],
-                 'explored': False,
-                 'label': 7},
-             3: {'children': [6],
-                 'explored': False,
-                 'label': 9},
-             4: {'children': [7],
-                 'explored': False,
-                 'label': 1},
-             5: {'children': [2],
-                 'explored': False,
-                 'label': 8},
-             6: {'children': [9],
-                 'explored': False,
-                 'label': 5},
-             7: {'children': [1],
-                 'explored': False,
-                 'label': 3},
-             8: {'children': [5, 6],
-                 'explored': False,
-                 'label': 6},
-             9: {'children': [3, 7],
-                 'explored': False,
-                 'label': 4}})
-OrderedDict([(3, 9), (5, 8), (2, 7),
-             (8, 6), (6, 5), (9, 4),
-             (7, 3), (1, 2), (4, 1)])
-4 1
-entering at 4
-child 7 of vertex 4
-entering at 7
-child 1 of vertex 7
-entering at 1
-child 4 of vertex 1
-child 4 already explored
-exiting from 1
-exiting from 7
-exiting from 4
-1 0
-7 -1
-9 4
-entering at 9
-child 3 of vertex 9
-entering at 3
-child 6 of vertex 3
-entering at 6
-child 9 of vertex 6
-child 9 already explored
-exiting from 6
-exiting from 3
-child 7 of vertex 9
-child 7 already explored
-exiting from 9
-6 -3
-8 6
-entering at 8
-child 5 of vertex 8
-entering at 5
-child 2 of vertex 5
-entering at 2
-child 8 of vertex 2
-child 8 already explored
-exiting from 2
-exiting from 5
-child 6 of vertex 8
-child 6 already explored
-exiting from 8
-2 -6
-5 -7
-3 -4
-numSCC 3
-defaultdict(<class 'list'>,
-            {1: [4, 7, 1],
-             2: [9, 3, 6],
-             3: [8, 5, 2]})
+                 'explored': True}})
