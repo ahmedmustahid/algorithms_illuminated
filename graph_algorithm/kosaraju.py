@@ -20,14 +20,17 @@ fileName = Path.cwd()/"testCase2.txt"
 graph = graphFromFile(fileName)
 currentLabel = len(graph)
 dfsNum = 0
-labelDict = dict.fromkeys(range(currentLabel, 0, -1))
+#labelOrderedDict = dict.fromkeys(range(currentLabel, 0, -1))
+labelOrderedDict = collections.OrderedDict()
+numSCC = 0
+scc = collections.defaultdict(list)
 
-def reversedGraph(graph):
-    reversedGraph = collections.defaultdict(lambda: {'children': [], 'explored': False})
+def reverseGraph(graph):
+    reversedGraphh = collections.defaultdict(lambda: {'children': [], 'explored': False})
     for vertex in graph:
         for child in graph[vertex]['children']:
-            reversedGraph[child]['children'].append(vertex)
-    return reversedGraph
+            reversedGraphh[child]['children'].append(vertex)
+    return reversedGraphh
 
 def dfs(graph, vertex):
     global currentLabel
@@ -36,6 +39,7 @@ def dfs(graph, vertex):
     print(f"entering at {vertex}")
     dfsNum = dfsNum + 1
     graph[vertex]['explored'] = True
+    scc[numSCC].append(vertex) 
     for child in graph[vertex]['children']:
         print(f"child {child} of vertex {vertex}")
         if not graph[child]['explored']:
@@ -43,7 +47,7 @@ def dfs(graph, vertex):
         else:
             print(f"child {child} already explored")
     graph[vertex]['label'] = currentLabel
-    labelDict[currentLabel] = vertex
+    labelOrderedDict[vertex] = currentLabel
     currentLabel = currentLabel -1
     print(f"exiting from {vertex}")
 
@@ -57,27 +61,45 @@ def iterativeDFS(graph):
             graph[poppedNode]['explored'] = True
             stack += graph[poppedNode]['children']
             exploreOrder.append(poppedNode)
-            #for child in graph[poppedNode]['children']:
     print(exploreOrder)
 
 
 
-def toposort():
+def toposort(graph):
     for vertex in graph:
         if not graph[vertex]['explored']:
             print(f"in toposort {vertex}")
             dfs(graph, vertex)
+            #iterativeDFS(graph)
 
 
 if __name__=="__main__":
     #print(tracemalloc.get_traced_memory())
     #dfs(vertex=2)
-    #pp.pprint(reversedGraph(graph))
+    #pp.pprint(reverseGraphh(graph))
     #toposort()
     #tracemalloc.stop()
-    #pp.pprint(labelDict)
+    #pp.pprint(labelOrderedDict)
+    reversedGraph = reverseGraph(graph)
+    #pp.pprint(reversedGraph)
+    #iterativeDFS(graph)
+    toposort(graph=reversedGraph)
+    pp.pprint(reversedGraph)
+    #pp.pprint(graph)
+    
+    for vertex in reversedGraph:
+        graph[vertex]['label'] = reversedGraph[vertex]['label']
+    
     pp.pprint(graph)
-    iterativeDFS(graph)
+    pp.pprint(labelOrderedDict)
+    scc.clear()
+    for vertex, label in reversed(labelOrderedDict.items()):
+        print(vertex, label)
+        if not graph[vertex]['explored']:
+            numSCC = numSCC + 1
+            dfs(graph, vertex)
+    print(f"numSCC {numSCC}")
+    pp.pprint(scc)
 
 
 
