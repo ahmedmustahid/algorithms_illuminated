@@ -78,7 +78,8 @@ if __name__ == "__main__":
                 edgeWeights[(parent, child)] = graph[parent]["length"] + weight
         if edgeWeights:
             minParent, minChild = min(edgeWeights, key= edgeWeights.get)
-            minWeight = min(edgeWeights.values())
+            #minWeight = min(edgeWeights.values())
+            minWeight = edgeWeights[(minParent, minChild)]
             seenNodes.add(minChild)
             stack.append(minChild)
             edgeWeights.pop((minParent, minChild))
@@ -90,7 +91,7 @@ if __name__ == "__main__":
     nodeMap = map(int, "7,37,59,82,99,115,133,165,188,197".split(","))
     nodeList = list(nodeMap)
     lengths = [str(graph[node]["length"]) for node in nodeList]
-    lengths = [str(graph[node]["length"]) for node in nodeList]
+    #lengths = [str(graph[node]["length"]) for node in nodeList]
     lenString = ",".join(lengths)
     print("networkx result")
     pp.pprint(dijkstraPathNetworkx(graph, nodeList))
