@@ -19,6 +19,7 @@ def createGraph(fileName):
                 node, weight = map(int, child.split(','))
                 graph[int(test[0])]['children'][node] = weight
     #pp.pprint(graph)
+    #sys.exit()
     return graph
 
 def visualizeGraph(fileName):
@@ -83,8 +84,10 @@ if __name__ == "__main__":
             seenNodes.add(minChild)
             stack.append(minChild)
             edgeWeights.pop((minParent, minChild))
-            if minWeight < graph[minChild]['length']:
-                graph[minChild]['length'] = minWeight
+            
+            graph[minChild]['length'] = min(minWeight, graph[minChild]['length'])
+            #if minWeight < graph[minChild]['length']:
+            #    graph[minChild]['length'] = minWeight
 
 
     #pp.pprint(graph)

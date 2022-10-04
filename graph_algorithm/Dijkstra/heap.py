@@ -36,6 +36,11 @@ def extractMin(heap):
         if secondChildIndex >= len(heap) -1:
             break
     return minimumElement, heap
+def createIndicesInHeap(heap):
+    indicesInHeap = {}
+    for i, element in enumerate(heap):
+        indicesInHeap[element] = i
+    return indicesInHeap
 
 if __name__=="__main__":
     keys = list(range(9,0,-1))
@@ -46,6 +51,9 @@ if __name__=="__main__":
     for key in keys:
         heap = insert(heap, key)
         #pp.pprint(heap)
+    
+    indicesInHeap = createIndicesInHeap(heap)
+    pp.pprint(indicesInHeap)
     print(f"time for my heap insert implementation {time.time() - start}")
     print("my heap insertion")
     pp.pprint(heap)

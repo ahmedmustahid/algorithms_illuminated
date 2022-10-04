@@ -4,14 +4,62 @@ import pprint
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
-import more_itertools
-import heapq
+import math
+#import more_itertools
+#import heapq
 pp = pprint.PrettyPrinter(width=41, compact=True)
 #fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
 fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/testCase1.txt"
 
+def insert(heap, key):
+    if heap:
+        heap.append(key)
+        childIndex = len(heap) - 1
+        parentIndex = math.ceil(childIndex / 2) - 1
+        while heap[parentIndex][0] > heap[childIndex][0] and childIndex != 0:
+            heap[parentIndex][0], heap[childIndex][0] = heap[childIndex][0], heap[parentIndex][0]
+            childIndex = parentIndex
+            parentIndex = math.ceil(childIndex / 2) - 1
+    else:
+        heap.append(key)
+        childIndex = 0
+
+    return heap, childIndex
+
+def extractMin(heap):
+    minimumElement = heap[0]
+    heap[0] = heap.pop()
+    parentIndex = 0
+    firstChildIndex, secondChildIndex = 2 * parentIndex + 1, 2 * parentIndex + 2
+
+    while heap[parentIndex] > heap[firstChildIndex] or heap[parentIndex] > heap[secondChildIndex]:
+        if heap[firstChildIndex] < heap[secondChildIndex]:
+            heap[firstChildIndex], heap[parentIndex] = heap[parentIndex], heap[firstChildIndex]
+            parentIndex = firstChildIndex
+            firstChildIndex, secondChildIndex = 2 * parentIndex + 1, 2 * parentIndex + 2
+        elif heap[secondChildIndex] <= heap[firstChildIndex]:
+            heap[secondChildIndex], heap[parentIndex] = heap[parentIndex], heap[secondChildIndex]
+            parentIndex = secondChildIndex
+            firstChildIndex, secondChildIndex = 2 * parentIndex + 1, 2 * parentIndex + 2
+
+        if secondChildIndex >= len(heap) -1:
+            break
+    return minimumElement, heap
+
+def delete(heap, index):
+    lastIndex = len(heap) - 1
+    if index == lastIndex:
+        deletedElement = heap.pop()
+        return deletedElement, heap
+    if index == 0:
+        deletedElement, heap = extractMin(heap)
+        return deletedElement, heap
+    firstChildIndex, secondChildIndex = 2 * index + 1, 2 * index + 2
+    if secondChildIndex <= 
+
+
 def createGraph(fileName):
-    graph = collections.defaultdict(lambda : {'children': {}, 'length': 1000000})
+    graph = collections.defaultdict(lambda : {'children': {}, 'length': 1000000, 'indexInHeap': None})
     with open(fileName) as f:
         for line in f:
             test = line.split()
@@ -52,6 +100,11 @@ def visualizeGraph(fileName):
     print(f"{imageName} saved")
 
 #visualizeGraph(fileName= fileName)
+def createIndicesInHeap(heap):
+    indicesInHeap = {}
+    for i, element in enumerate(heap):
+        indicesInHeap[element] = i
+    return indicesInHeap
 
 def dijkstraPathNetworkx(graph, tails):
     G = nx.DiGraph()
@@ -70,32 +123,11 @@ if __name__ == "__main__":
     graph = createGraph(fileName)
     seenVertex = {}
     graph[1]['length'] = 0
-    heapGraph = [(graph[vertex]['length'], (vertex, graph[vertex]['children'])) for vertex in graph.keys()]
-    #pp.pprint(heapGraph)
-    heapq.heapify(heapGraph)
-    #pp.pprint(heapGraph)
-    #print(heapq.heappop(heapGraph))
-    #sys.exit()
-    while heapGraph:
-        minLength, minElement = heapq.heappop(heapGraph)
-        minVertex, minVertexChildren = minElement
-        seenVertex.add(minVertex)
-        graph[minVertex]['length'] = minLength
-
-        for child, length in minVertexChildren.items():
-            heapGraph[]
-
-
-
-    #pp.pprint(graph)
-    nodeMap = map(int, "7,37,59,82,99,115,133,165,188,197".split(","))
-    nodeList = list(nodeMap)
-    lengths = [str(graph[node]["length"]) for node in nodeList]
-    #lengths = [str(graph[node]["length"]) for node in nodeList]
-    lenString = ",".join(lengths)
-    print("networkx result")
-    pp.pprint(dijkstraPathNetworkx(graph, nodeList))
-    print("my result")
-    pp.pprint(lenString)
-
-
+    graph[1]['indexInHeap'] = 0
+    heap = []
+    for vertex in graph:
+        heap, _ = insert(heap, (graph[vertex]['length'], vertex))
+    pp.pprint(heap)
+    deletedElement, heap = delete(heap, 5)
+    print(f"deleted elem {deletedElement}")
+    pp.print(heap)
