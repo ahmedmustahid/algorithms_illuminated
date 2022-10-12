@@ -32,6 +32,7 @@ def extractMin(heap: list) -> (int,list):
         if len(heap) > 1:
             heap[0] = heap.pop()
         elif len(heap) == 1:
+            root = heap.pop()
             return root, heap
 
         parentIndex = 0
@@ -51,7 +52,7 @@ def extractMin(heap: list) -> (int,list):
                 heap[parentIndex], heap[smallerElemIndex] = heap[smallerElemIndex], heap[parentIndex]
             return root, heap
         else:
-            return root, heap 
+            return root, heap
 
         while heap[parentIndex] > heap[smallerChildIndex]:
             heap[parentIndex], heap[smallerChildIndex] = heap[smallerChildIndex], heap[parentIndex]
@@ -76,7 +77,8 @@ def extractMin(heap: list) -> (int,list):
 if __name__=="__main__":
     h = []
     #temp = [4, 4, 4, 9, 9, 11, 12, 13]
-    temp = [4, 11, 9, 13, 4, 12, 9, 4]
+    #temp = [4, 11, 9, 13, 4, 12, 9, 4]
+    temp = list(map(int, "7 10 20 3 4 49 50".split()))
     #random.shuffle(temp)
     print("before ", temp)
     #for t in temp:
@@ -87,6 +89,9 @@ if __name__=="__main__":
     heapq.heapify(temp)
     print("from python", temp)
     print("from me ",h)
+    
+    #temp = [4]
+    #temp = [4,5,13]
 
     minimumVal, resultHeap = extractMin(temp)
     print(minimumVal)
