@@ -1,12 +1,10 @@
 import heapq
-import random
-import math
 
 def getParentIndex(childIndex):
     if childIndex % 2 == 0: #even
-        parentIndex = childIndex /2 - 1
+        parentIndex = childIndex // 2 - 1
     else:
-        parentIndex = math.floor(childIndex / 2)
+        parentIndex = childIndex // 2
     return parentIndex
 
 
@@ -19,8 +17,12 @@ def insert(heap: list, elem):
 
         parentIndex = getParentIndex(childIndex)
 
-        while heap[parentIndex] < heap[childIndex]:
+        while heap[parentIndex] > heap[childIndex] and childIndex != 0:
             heap[parentIndex], heap[childIndex] = heap[childIndex], heap[parentIndex]
+            childIndex = parentIndex
+            parentIndex = getParentIndex(childIndex)
+
+    return heap
 
 
 
@@ -31,8 +33,11 @@ if __name__=="__main__":
     temp = [4, 11, 9, 13, 4, 12, 9, 4]
     #random.shuffle(temp)
     print("before ", temp)
+    #for t in temp:
+    #    heapq.heappush(h, t)
     for t in temp:
-        heapq.heappush(h, t)
+        insert(h, t)
+        print(h)
     heapq.heapify(temp)
-    print(temp)
-    print(h)
+    print("from python", temp)
+    print("from me ",h)
