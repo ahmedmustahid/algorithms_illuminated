@@ -17,12 +17,58 @@ def insert(heap: list, elem):
 
         parentIndex = getParentIndex(childIndex)
 
-        while heap[parentIndex] > heap[childIndex] and childIndex != 0:
+        while childIndex != 0 and heap[parentIndex] > heap[childIndex]:
             heap[parentIndex], heap[childIndex] = heap[childIndex], heap[parentIndex]
             childIndex = parentIndex
             parentIndex = getParentIndex(childIndex)
 
     return heap
+
+def extractMin(heap: list) -> (int,list):
+    if len(heap) == 0:
+        raise Exception("Empty heap")
+    else:
+        root = heap[0]
+        if len(heap) > 1:
+            heap[0] = heap.pop()
+        elif len(heap) == 1:
+            return root, heap
+
+        parentIndex = 0
+
+        getChildrenIndices = lambda parentIndex : (2 * parentIndex + 1, 2 * parentIndex + 2)
+        #child1Index = 2 * parentIndex + 1
+        #child2Index = 2 * parentIndex + 2
+        lastIndex = len(heap) - 1
+        child1Index, child2Index = getChildrenIndices(parentIndex)
+        returnSmallerChildIndex = lambda x,y: (x if heap[x]<heap[y] else y)
+        if child2Index <= lastIndex:
+            #smallerChild = min(heap[child1Index], heap[child2Index])
+            smallerChildIndex = returnSmallerChildIndex(child1Index, child2Index)
+        elif child1Index <= lastIndex:
+            smallerElemIndex = returnSmallerChildIndex(parentIndex, child1Index)
+            if parentIndex != smallerElemIndex:
+                heap[parentIndex], heap[smallerElemIndex] = heap[smallerElemIndex], heap[parentIndex]
+            return root, heap
+        else:
+            return root, heap 
+
+        while heap[parentIndex] > heap[smallerChildIndex]:
+            heap[parentIndex], heap[smallerChildIndex] = heap[smallerChildIndex], heap[parentIndex]
+            parentIndex = smallerChildIndex
+            child1Index, child2Index = getChildrenIndices(parentIndex)
+            if child2Index <= lastIndex:
+                #smallerChild = min(heap[child1Index], heap[child2Index])
+                smallerChildIndex = returnSmallerChildIndex(child1Index, child2Index)
+            elif child1Index <= lastIndex:
+                smallerElemIndex = returnSmallerChildIndex(parentIndex, child1Index)
+                if parentIndex != smallerElemIndex:
+                    heap[parentIndex], heap[smallerElemIndex] = heap[smallerElemIndex], heap[parentIndex]
+                return root, heap
+            else:
+                break
+        return root, heap
+
 
 
 
@@ -41,3 +87,7 @@ if __name__=="__main__":
     heapq.heapify(temp)
     print("from python", temp)
     print("from me ",h)
+
+    minimumVal, resultHeap = extractMin(temp)
+    print(minimumVal)
+    print(resultHeap)
