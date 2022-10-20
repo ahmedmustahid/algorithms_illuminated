@@ -4,10 +4,10 @@ import pprint
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
-import more_itertools
+#import more_itertools
 pp = pprint.PrettyPrinter(width=41, compact=True)
-fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
-#fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/testCase1.txt"
+#fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
+fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/testCase1.txt"
 
 def createGraph(fileName):
     graph = collections.defaultdict(lambda : {'children': {}, 'length': 1000000})
