@@ -93,6 +93,7 @@ if __name__=="__main__":
     #temp = [4]
     #temp = [4,5,13]
     print(f"heap inside class {hp.heap}")
-    minimumVal, resultHeap = hp.extractMin()
+    minimumVal, _ = hp.extractMin()
     print(minimumVal)
-    print(resultHeap)
+    #print(resultHeap)
+    print(hp.heap)
