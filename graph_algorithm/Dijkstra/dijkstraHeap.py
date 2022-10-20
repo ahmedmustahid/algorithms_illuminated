@@ -4,6 +4,7 @@ import pprint
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
+from heap import Heap
 #import more_itertools
 pp = pprint.PrettyPrinter(width=41, compact=True)
 #fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"

@@ -10,7 +10,7 @@ class Heap:
             parentIndex = childIndex // 2
         return parentIndex
 
-    def insert(self, elem):
+    def insert(self, elem: int):
         if len(self.heap)==0:
             self.heap.append(elem)
         else:
