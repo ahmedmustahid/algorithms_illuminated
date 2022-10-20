@@ -4,7 +4,7 @@ import pprint
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
-from heap import Heap
+from heap import HeapKeyVal
 #import more_itertools
 pp = pprint.PrettyPrinter(width=41, compact=True)
 #fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
@@ -71,20 +71,22 @@ if __name__ == "__main__":
     graph = createGraph(fileName)
     stack = [1]
     seenNodes = {1}
-    edgeWeights = {}
+    edgeWeights = HeapKeyVal([(0,1)])
     graph[stack[0]]['length'] = 0
     while stack:
         parent = stack.pop()
         for child, weight in graph[parent]['children'].items():
             if not child in seenNodes:
-                edgeWeights[(parent, child)] = graph[parent]["length"] + weight
-        if edgeWeights:
-            minParent, minChild = min(edgeWeights, key= edgeWeights.get)
+                #edgeWeights[(parent, child)] = graph[parent]["length"] + weight
+                edgeWeights.insert((weight, child))
+        if edgeWeights.heap:
+            #minParent, minChild = min(edgeWeights, key= edgeWeights.get)
+            (minWeight, minChild), _ = edgeWeights.extractMin()
             #minWeight = min(edgeWeights.values())
-            minWeight = edgeWeights[(minParent, minChild)]
+            #minWeight = edgeWeights[(minParent, minChild)]
             seenNodes.add(minChild)
             stack.append(minChild)
-            edgeWeights.pop((minParent, minChild))
+            #edgeWeights.pop((minParent, minChild))
             
             graph[minChild]['length'] = min(minWeight, graph[minChild]['length'])
             #if minWeight < graph[minChild]['length']:
