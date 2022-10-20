@@ -1,4 +1,6 @@
 import heapq
+
+from graph_algorithm.Dijkstra import heap
 class Heap:
     def __init__(self, heap: list):
         self.heap = heap
@@ -22,6 +24,17 @@ class Heap:
                 childIndex = parentIndex
                 parentIndex = Heap.getParentIndex(childIndex)
         return self.heap
+    @staticmethod
+    def heapToDictionary(heap):
+        return {heapElem[1]:index for (index, heapElem) in enumerate(heap)}
+
+   def delete(self, element: int):#element is node
+       #dictOfElems = Heap.heapToDictionary(self.heap) #will take O(n)
+
+    def rearrange(self, parentIndex):
+
+
+
 
     def extractMin(self) -> (tuple ,list):
         if len(self.heap) == 0:
@@ -29,7 +42,7 @@ class Heap:
         else:
             root = self.heap[0]
             if len(self.heap) > 1:
-                self.heap[0] = self.heap.pop()
+                self.heap[0] = self.heap.pop() #replace first elem by last
             elif len(self.heap) == 1:
                 root = self.heap.pop()
                 return root, self.heap
@@ -45,7 +58,7 @@ class Heap:
             if child2Index <= lastIndex:
                 #smallerChild = min(self.heap[child1Index], self.heap[child2Index])
                 smallerChildIndex = returnSmallerChildIndex(child1Index, child2Index)
-            elif child1Index <= lastIndex:
+            elif child1Index <= lastIndex: #only left child
                 smallerElemIndex = returnSmallerChildIndex(parentIndex, child1Index)
                 if parentIndex != smallerElemIndex:
                     self.heap[parentIndex], self.heap[smallerElemIndex] = self.heap[smallerElemIndex], self.heap[parentIndex]

@@ -23,6 +23,20 @@ class Heap:
                 parentIndex = Heap.getParentIndex(childIndex)
         return self.heap
 
+    def swap(self, indx1, indx2):
+        self.heap[indx2], self.heap[indx1] = self.heap[indx1], self.heap[indx2]
+
+    def reArrange(self, parentIndex):
+        getChildrenIndices = lambda parentIndex : (2 * parentIndex + 1, 2 * parentIndex + 2)
+        lastIndex = len(self.heap) - 1
+        child1Index, child2Index = getChildrenIndices(parentIndex)
+        returnSmallerChildIndex = lambda x,y: (x if self.heap[x]<self.heap[y] else y)
+        
+        if child2Index <= lastIndex:
+
+
+
+
     def extractMin(self) -> (int,list):
         if len(self.heap) == 0:
             raise Exception("Empty self.heap")
@@ -50,8 +64,8 @@ class Heap:
                 if parentIndex != smallerElemIndex:
                     self.heap[parentIndex], self.heap[smallerElemIndex] = self.heap[smallerElemIndex], self.heap[parentIndex]
                 return root, self.heap
-            else:
-                return root, self.heap
+            #else:
+            #    return root, self.heap
     
             while self.heap[parentIndex] > self.heap[smallerChildIndex]:
                 self.heap[parentIndex], self.heap[smallerChildIndex] = self.heap[smallerChildIndex], self.heap[parentIndex]
