@@ -20,7 +20,6 @@ class Testheap:
     
     def test_heapExtractMin(self):
         temp = list(map(int, "7 10 20 3 4 49 50".split()))
-        #temp.sort()
         heapq.heapify(temp)
         self.hp.heap = temp[:]
 
@@ -28,6 +27,19 @@ class Testheap:
         minFromMine, outputHeap = self.hp.extractMin()
         assert minFromMine == minFromPythonHeapq
         assert outputHeap == temp
+    
+    def test_delete(self):
+        temp = list(map(int, "7 10 20 3 4 49 50".split()))
+        heapq.heapify(temp)
+        self.hp.heap = temp[:]
+        k, _ = self.hp.delete(key=20)
+
+        temp = list(map(int, "7 10 3 4 49 50".split()))
+        heapq.heapify(temp)
+        
+        assert k == 20
+        assert self.hp.heap == temp
+
 
 
 
