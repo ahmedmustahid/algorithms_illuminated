@@ -27,19 +27,48 @@ class Testheap:
         minFromMine, outputHeap = self.hp.extractMin()
         assert minFromMine == minFromPythonHeapq
         assert outputHeap == temp
+
+    def test_isHeap(self):
+        temp = list(map(int, "7 10 20 3 4 49 50".split()))
+        assert Heap.isHeap(temp) == False
+        #assert Heap
+        heapq.heapify(temp)
+        assert Heap.isHeap(temp) == True
+
+        temp = list(range(100,3,-1))
+        assert Heap.isHeap(temp) == False
+        heapq.heapify(temp)
+        assert Heap.isHeap(temp) == True
+
+        temp = [0,2]
+        assert Heap.isHeap(temp) == True
+
+        temp = [100,1, 4]
+        assert Heap.isHeap(temp) == False
+
     
     def test_delete(self):
         temp = list(map(int, "7 10 20 3 4 49 50".split()))
         heapq.heapify(temp)
         self.hp.heap = temp[:]
+        self.hp.createIndicesDict()
         k, _ = self.hp.delete(key=20)
 
-        temp = list(map(int, "7 10 3 4 49 50".split()))
-        heapq.heapify(temp)
         
         assert k == 20
-        assert self.hp.heap == temp
+        assert Heap.isHeap(self.hp.heap) == True
+        
+        
+        temp = list(range(100,3,-1))
+        heapq.heapify(temp)
+        self.hp.heap = temp[:]
+        self.hp.createIndicesDict()
+        k, _ = self.hp.delete(key=20)
 
-
+        assert k == 20
+        assert Heap.isHeap(self.hp.heap) == True
+    
+        self.hp.insert(elem=20)
+        assert Heap.isHeap(self.hp.heap) == True
 
 

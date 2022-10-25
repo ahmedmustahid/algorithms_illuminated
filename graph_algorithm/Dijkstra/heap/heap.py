@@ -10,6 +10,31 @@ class Heap:
         else:
             parentIndex = childIndex // 2
         return parentIndex
+    @staticmethod
+    def isHeap(heap):
+        parentIndex = 0
+        getChildrenIndices = lambda parentIndex : (2 * parentIndex + 1, 2 * parentIndex + 2)
+        child1Index, child2Index = getChildrenIndices(parentIndex)
+        returnSmallerChildIndex = lambda x,y: (x if heap[x]<heap[y] else y)
+        lastIndex = len(heap) - 1
+        while not child1Index > lastIndex:
+            if child2Index == lastIndex:
+                smallerChildIndex = returnSmallerChildIndex(child1Index, child2Index)
+                return heap[parentIndex] < heap[smallerChildIndex]
+            elif child2Index < lastIndex:
+                smallerChildIndex = returnSmallerChildIndex(child1Index, child2Index)
+                if heap[parentIndex] < heap[smallerChildIndex]:
+                    parentIndex = smallerChildIndex
+                    child1Index, child2Index = getChildrenIndices(parentIndex)
+                    continue
+                else:
+                    return False
+            elif child1Index == lastIndex:
+                return heap[parentIndex] < heap[child1Index]
+        lastChildIndex = parentIndex
+        lastParentIndex = Heap.getParentIndex(childIndex=lastChildIndex)
+        return heap[lastParentIndex] < heap[parentIndex]
+
 
 
     def swap(self, indx1, indx2):
@@ -37,6 +62,7 @@ class Heap:
 
 
     def swapLastElemWithParent(self, parentIndex):
+        
         lastIndex = len(self.heap) - 1
         getChildrenIndices = lambda parentIndex : (2 * parentIndex + 1, 2 * parentIndex + 2)
         child1Index, child2Index = getChildrenIndices(parentIndex)
@@ -61,13 +87,23 @@ class Heap:
             if parentIndex != smallerElemIndex:
                 #self.heap[parentIndex], self.heap[smallerElemIndex] = self.heap[smallerElemIndex], self.heap[parentIndex]
                 self.swap(smallerElemIndex, parentIndex)
+    
+    def removeLastElemAndReplaceCurrent(self, currentIndx):
+        lastElem = self.heap.pop()
+        self.indicesDict[lastElem] = currentIndx
+        self.heap[currentIndx] = lastElem
 
     def delete(self, key):
         if key in self.indicesDict:
             indx = self.indicesDict.pop(key)
-            #self.heap[indx] = self.heap.pop()
+            #lastElem = self.heap.pop()
+            #self.heap[lastElem] = indx
+            self.removeLastElemAndReplaceCurrent(currentIndx=indx)
             self.swapLastElemWithParent(parentIndex=indx)
         return key, self.heap
+
+
+
 
     def extractMin(self) -> (int,list):
         if len(self.heap) == 0:
@@ -78,7 +114,8 @@ class Heap:
                 return root, []
             elif len(self.heap) > 1:
                 root = self.heap[0]
-                self.heap[0] = self.heap.pop()
+                #self.heap[0] = self.heap.pop()
+                self.removeLastElemAndReplaceCurrent(currentIndx=0)
                 self.swapLastElemWithParent(parentIndex=0)
         return root, self.heap
 '''
@@ -138,3 +175,5 @@ if __name__=="__main__":
     print(minimumVal)
     #print(resultHeap)
     print(hp.heap)
+    hp.createIndicesDict()
+    hp.delete(key=20)
