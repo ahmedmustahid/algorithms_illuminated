@@ -38,9 +38,9 @@ class Heap:
 
 
     def swap(self, indx1, indx2):
-        self.heap[indx2][0], self.heap[indx1][0] = self.heap[indx1][0], self.heap[indx2][0]
-        self.indicesDict[self.heap[indx2][0]] = indx1
-        self.indicesDict[self.heap[indx1][0]] = indx2
+        self.heap[indx2], self.heap[indx1] = self.heap[indx1], self.heap[indx2]
+        self.indicesDict[self.heap[indx2]] = indx1
+        self.indicesDict[self.heap[indx1]] = indx2
 
     def insert(self, elem: int):
         if len(self.heap)==0:
@@ -91,7 +91,7 @@ class Heap:
     def removeLastElemAndReplaceCurrent(self, currentIndx):
         lastElem = self.heap.pop()
         self.indicesDict[lastElem] = currentIndx
-        self.heap[currentIndx][0] = lastElem
+        self.heap[currentIndx] = lastElem
 
     def delete(self, key):
         if key in self.indicesDict:
@@ -109,11 +109,13 @@ class Heap:
         if len(self.heap) == 0:
             raise Exception("Empty heap")
         else:
-            root = self.heap[0][0]
+            root = self.heap[0]
+            #root = self.heap[0][0]
             if len(self.heap)==1:
                 return root, []
             elif len(self.heap) > 1:
-                root = self.heap[0][0]
+                root = self.heap[0]
+                #root = self.heap[0][0]
                 #self.heap[0] = self.heap.pop()
                 self.removeLastElemAndReplaceCurrent(currentIndx=0)
                 self.swapLastElemWithParent(parentIndex=0)
