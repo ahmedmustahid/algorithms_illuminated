@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Set
 
 import networkx as nx
 
@@ -21,6 +21,29 @@ def getGraph(fname: str):
         graphDict[v2].append((v1, weight))
 
     return graphDict
+
+
+def getEdges(fname: str):
+    edges: List[Tuple[str, str, int]] = []
+    with open(fname, "r") as f:
+        for line in f:
+            if len(line.split()) < 3:
+                continue
+            v1, v2, weight = line.split()
+            weight = int(weight)
+            temp = (v1, v2, weight)
+            edges.append(temp)
+
+    return edges
+
+
+def getVertices(edges: List[Tuple[str, str, int]]) -> Set:
+    vertices: List[str] = []
+    for edge in edges:
+        v, w, _ = edge
+        vertices.append(v)
+        vertices.append(w)
+    return set(vertices)
 
 
 def getNxGraph(fname: str):
