@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Set
+from typing import List, Dict, Tuple
 from union_find import UnionFind
 from create_graph import getEdges, getVertices
 
