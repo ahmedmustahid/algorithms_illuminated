@@ -53,6 +53,7 @@ if __name__ == "__main__":
     # fname = "input_completeRandom_10_32.txt"
     # fname = "simple.txt"
     fname = "clustering1.txt"
+    fname = "input_completeRandom_30_1024.txt"
     fname = f"{root}/{fname}"
 
     edges = getEdges(fname)
