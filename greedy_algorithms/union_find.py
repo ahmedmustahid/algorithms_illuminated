@@ -8,6 +8,14 @@ class UnionFind:
         return self.value == other.value
 
     @staticmethod
+    def count(U):
+        parents = []
+        for k, v in U.items():
+            parent = UnionFind.find(v)
+            parents.append(parent.value)
+        return len(set(parents))
+
+    @staticmethod
     def find(node):
         temp = node
         while temp.parent != temp:
@@ -51,14 +59,21 @@ class UnionFind:
 
 
 if __name__ == "__main__":
-    totalNum = 10
-    U = {str(i): UnionFind(str(i)) for i in range(totalNum)}
-    lst = list(range(totalNum))
+    uf1 = UnionFind("1")
+    uf2 = UnionFind("2")
+    uf3 = UnionFind("3")
+    uf3.rank = 1
 
-    for i, ls in enumerate(lst):
-        if i < len(lst) - 2:
-            ls = str(ls)
-            UnionFind.union(U, U[ls], U[str(lst[i + 1])])
-            print(f"find: {ls}, {str(lst[i + 1])}", UnionFind.find(U[ls]))
-            print(U[ls])
-            print("-----------")
+    U = {"1": uf1, "2": uf2, "3": uf3}
+    UnionFind.union(U, uf1, uf2)
+    print(f"uf2 rank {uf2.rank}")
+
+    UnionFind.union(U, uf2, uf3)
+    print(f"uf3 rank {uf3.rank}")
+    print(f"uf1 rank {uf1.rank}")
+
+    UnionFind.find(uf1)
+    print(f"uf1 parent {uf1.parent}")
+    print(f"uf1 parent rank {uf1.parent.rank}")
+
+    print(f"count {UnionFind.count(U)}")
