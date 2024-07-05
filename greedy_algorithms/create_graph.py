@@ -46,6 +46,16 @@ def getVertices(edges: List[Tuple[str, str, int]]) -> Set:
     return set(vertices)
 
 
+def getVerticesFromFile(fname: str):
+    vertices: List[str] = []
+    with open(fname, "r") as f:
+        for i, line in enumerate(f):
+            if i == 0:
+                continue
+            vertices.append(line)
+    return vertices
+
+
 def getNxGraph(fname: str):
     graph: List[Tuple[str, str, Dict[str, int]]] = []
     with open(fname, "r") as f:
