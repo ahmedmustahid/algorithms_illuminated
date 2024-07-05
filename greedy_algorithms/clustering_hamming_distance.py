@@ -1,6 +1,7 @@
 from typing import List, Dict, Tuple, Set
 import itertools
 from create_graph import getVerticesFromFile
+from union_find import UnionFind
 
 
 def strBinToInt(x: str) -> int:
@@ -62,23 +63,62 @@ def getBitMasksFromCombinations(totalBits: int = 3):
 def getNumsFromHummingDiff(num, hammingDist: int = 1, totalBits: int = 3) -> List[int]:
     numsHummingDiff = []
     bitMasks = []
+    if hammingDist == 0:
+        numsHummingDiff = [num]
+        return numsHummingDiff
     if hammingDist == 1:
         bitMasks = [1 << i for i in range(totalBits)]
     else:
         bitMasks = getBitMasksFromCombinations(totalBits)
     numsHummingDiff = [num ^ bitMask for bitMask in bitMasks]
-    print(bitMasks)
+    # print(bitMasks)
     return numsHummingDiff
+
+
+def getUFsFromIdxs(nodeToIdxsValues: Set[int]) -> Dict[str, UnionFind]:
+    nodeToIdxsValuesStrs = [str(nodeIdxValue) for nodeIdxValue in nodeToIdxsValues]
+    ufDict = UnionFind.initialize(nodeToIdxsValuesStrs)
+
+    return ufDict
+
+
+def kruscal_clustering_hamming(fname: str):
+    nodeToIdxs = nodeToIdxsMap(fname)
+    nodeToIdxsValues = set(itertools.chain(*nodeToIdxs.values()))
+
+    U = getUFsFromIdxs(nodeToIdxsValues)
+
+    distances = [0, 1, 2]
+
+    for dist in distances:
+        for node, idxs in nodeToIdxs.items():
+            numsHummingDiff = getNumsFromHummingDiff(
+                num=node, hammingDist=dist, totalBits=24
+            )
+
+            for num in numsHummingDiff:
+                if num in nodeToIdxs:
+                    idxsEdges = list(itertools.product(idxs, nodeToIdxs[num]))
+                    for idxv, idxw in idxsEdges:
+                        uv, uw = U[str(idxv)], U[str(idxw)]
+                        if UnionFind.find(uv) != UnionFind.find(uw):
+                            UnionFind.union(U, uv, uw)
+    cluster_num = UnionFind.count(U)
+    return cluster_num
 
 
 if __name__ == "__main__":
     root = "test_cases/kruskal"
-    fname = "clustering_big_hamming.txt"
+    fname = "hamming/input_random_50_512_14.txt"
+    fname = "hamming/clustering_big_hamming.txt"
     fname = f"{root}/{fname}"
 
-    x = "1 0 1 0"
-    x = strBinToInt(x)
+    # x = "1 0 1 0"
+    # x = strBinToInt(x)
 
-    nums = getNumsFromHummingDiff(x, hammingDist=1, totalBits=4)
-    bins = [bin(num) for num in nums]
-    print(*bins, sep="\n")
+    # nums = getNumsFromHummingDiff(x, hammingDist=1, totalBits=4)
+    # bins = [bin(num) for num in nums]
+    # print(*bins, sep="\n")
+
+    cluster_num = kruscal_clustering_hamming(fname)
+    print(cluster_num)
