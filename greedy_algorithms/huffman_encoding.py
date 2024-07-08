@@ -7,6 +7,8 @@ class Tree:
         self.idx = idx
         self.left: Self | None = None
         self.right: Self | None = None
+        self.rank = 0
+        self.min_rank = 0
 
     def __repr__(self) -> str:
         return f"|{str(self.left)}" + str(self.idx) + f"{str(self.right)}|"
@@ -38,6 +40,8 @@ def merge(t1: Tree, t2: Tree, idx: int) -> Tree:
     t3 = Tree(idx)
     t3.left = t1
     t3.right = t2
+    t3.rank = max(t1.rank, t2.rank) + 1
+    t3.min_rank = min(t1.min_rank, t2.min_rank) + 1
     return t3
 
 
@@ -78,30 +82,31 @@ def huffman_encoding(fname: str):
 
 
 def maxTreeLen(tree: Tree):
-    length = 0
-    while tree.right is not None:
-        tree = tree.right
-        length += 1
-    return length
+    return tree.rank
 
 
 def minTreeLen(tree: Tree):
-    length = 0
-    while tree.left is not None:
-        tree = tree.left
-        length += 1
-    return length
+    # length = 0
+    # while tree is not None:
+    #     if tree.left.rank <= tree.right.rank:
+    #         tree = tree.left
+    #         length += 1
+    #     else:
+    #         tree = tree.right
+    #         length += 1
+    # return length - 1
+    return tree.min_rank
 
 
 if __name__ == "__main__":
     root = "test_cases/huffman"
+    # fname = "input_random_1_10.txt"
+    fname = "input_random_21_320.txt"
+    fname = "input_random_29_1000.txt"
     fname = "huffman_weights.txt"
-    fname = "input_random_1_10.txt"
     fname = f"{root}/{fname}"
 
     d = huffman_encoding(fname)
-    print(d)
-    # print(len(d))
     tree = list(d.values())[0]
-    print(maxTreeLen(tree))
-    print(minTreeLen(tree))
+    print(f"max tree length: {maxTreeLen(tree)}")
+    print(f"minimum tree length: {minTreeLen(tree)}")
