@@ -60,9 +60,12 @@ def bitsFromStr(S: Set[int], st: str):
 if __name__ == "__main__":
     root = "test_cases"
     st = "1,2,3,4,17,117,517,997"
-    fname = "mwis.txt"
     fname = "input_random_29_1000.txt"
+    fname = "input_random_43_8000.txt"
+    fname = "input_random_48_10000.txt"
+    fname = "mwis.txt"
     fname = f"{root}/{fname}"
 
     S = mwis(fname)
+    print(f"filename: {fname}")
     print(bitsFromStr(S, st))
