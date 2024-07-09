@@ -1,5 +1,4 @@
 from typing import List, Tuple, Set
-# import pprint
 
 
 def getValuesAndWeights(fname: str) -> Tuple[List[int], List[int], int]:
@@ -17,24 +16,25 @@ def getValuesAndWeights(fname: str) -> Tuple[List[int], List[int], int]:
     return values, weights, knapsack_size
 
 
+def getKnapsackArray(
+    fname: str,
+) -> Tuple[List[List[int]], List[int], List[int], int]:
+    values, weights, C = getValuesAndWeights(fname)
+
+    n = len(values)
+    A = [[0 for _ in range(C + 1)] for _ in range(n)]
+
+    for i in range(1, n):
+        for c in range(C + 1):
+            if weights[i] > c:
+                A[i][c] = A[i - 1][c]
+            else:
+                A[i][c] = max(A[i - 1][c], A[i - 1][c - weights[i]] + values[i])
+
+    return A, values, weights, C
+
+
 def knapsackAlgorithm(fname: str) -> Tuple[Set[int], int]:
-    def getKnapsackArray(
-        fname: str,
-    ) -> Tuple[List[List[int]], List[int], List[int], int]:
-        values, weights, C = getValuesAndWeights(fname)
-
-        n = len(values)
-        A = [[0 for _ in range(C + 1)] for _ in range(n)]
-
-        for i in range(1, n):
-            for c in range(C + 1):
-                if weights[i] > c:
-                    A[i][c] = A[i - 1][c]
-                else:
-                    A[i][c] = max(A[i - 1][c], A[i - 1][c - weights[i]] + values[i])
-
-        return A, values, weights, C
-
     A, values, weights, C = getKnapsackArray(fname)
     S: Set[int] = set()
     n: int = len(values)
@@ -55,9 +55,11 @@ if __name__ == "__main__":
     fname = "input_random_10_100_10.txt"
     # fname = "small.txt"
     fname = "input_random_30_10000_1000.txt"
-    fname = "knapsack1.txt"
+    # fname = "knapsack1.txt"
+    # fname = "knapsack_big.txt"
     fname = f"{root}/{fname}"
 
+    A, values, weights, C = getKnapsackArray(fname)
     S, sum = knapsackAlgorithm(fname)
     # pprint.pprint(S)
     print(sum)
