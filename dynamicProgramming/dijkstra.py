@@ -101,14 +101,14 @@ def reconstruction(prev, target):
     return path
 
 
-def dijkstra(fileName, target=None):
-    graph = createGraph1(fileName)
+def dijkstra(graph, source="1", target=None):
+    # graph = createGraph1(fileName)
 
-    graph["1"]["length"] = 0
+    graph[source]["length"] = 0
 
     X = set()
     path = []
-    mins = {"1": 0}
+    mins = {source: 0}
 
     prev = {}
     H = []
@@ -122,7 +122,7 @@ def dijkstra(fileName, target=None):
         X.add(node)
         mins[node] = cost
         if target and node == target:
-            path = reconstruction(prev, target)
+            # path = reconstruction(prev, target)
             return path, mins
 
         for c in graph[node]["children"].keys():
@@ -148,7 +148,7 @@ if __name__ == "__main__":
         Path.home()
         / "work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
     )
-
+    graph = createGraph1(fileName)
     nodelist = "1,2,3,4,5,6,7,8".split(",")
     nodelist = "7,37,59,82,99,115,133,165,188,197".split(",")
 

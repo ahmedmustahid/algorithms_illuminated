@@ -35,7 +35,7 @@ def calcMinEdge(graph, tail, prev, i):
 
 def BellmanFord(graph, source="1"):
     # graph = createBFGraph(str(p))
-    print(graph)
+    # print(graph)
 
     curr = {tail: float("inf") for tail in graph.keys()}
     prev = {tail: float("inf") for tail in graph.keys()}
