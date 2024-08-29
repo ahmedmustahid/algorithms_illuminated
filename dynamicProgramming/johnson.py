@@ -46,22 +46,29 @@ def reweight(BFGraphDummy, BFCosts):
     for tail in BFGraphDummy:
         BFGraphDummy[tail]["heads"].pop("s")
         lengthTail = BFGraphDummy[tail]["length"]
+        offsetForEachVertex[tail] = lengthTail
         for head in BFGraphDummy[tail]["heads"]:
             lengthHead = BFGraphDummy[head]["length"]
             offset = lengthHead - lengthTail
             reweightedCost = BFGraphDummy[tail]["heads"][head] + offset
-            offsetForEachVertex[head] = offset
+            offsetForEachVertex[head] = lengthHead
             BFGraphDummy[tail]["heads"][head] = reweightedCost
-
+    print(f"offsets {offsetForEachVertex}")
     # for tail in BFGraphDummy:
     #     BFGraphDummy[tail]["length"] = float("inf")
     return BFGraphDummy, offsetForEachVertex
 
 
-def processAfterDij(dijCostsUnprocessed, offsetForEachVertex):
+def processAfterDij(source, dijCostsUnprocessed, offsetForEachVertex):
     costs = {}
     for node in dijCostsUnprocessed:
-        costs[node] = dijCostsUnprocessed[node] - offsetForEachVertex[node]
+        if source != node:
+            # print(f"source: {source} node: {node}")
+            costs[node] = (
+                dijCostsUnprocessed[node]
+                - offsetForEachVertex[source]
+                + offsetForEachVertex[node]
+            )
     return costs
 
 
@@ -85,12 +92,15 @@ def johnson(fname, source="1"):
     print()
 
     costs = []
-    source = "a"
-    for node in BFGraph:
-        _, dijCostsUnprocessed = dijkstra(dijGraph, source=source, target=node)
-        dijCosts = processAfterDij(dijCostsUnprocessed, offsetForEachVertex)
+    source = "b"
+    for source in BFGraph:
+        for node in BFGraph:
+            if node == source:
+                continue
+            _, dijCostsUnprocessed = dijkstra(dijGraph, source=source, target=node)
+            # print(dijCostsUnprocessed)
+            dijCosts = processAfterDij(source, dijCostsUnprocessed, offsetForEachVertex)
         costs.append((source, dijCosts))
-    print(costs)
     return costs
 
 
@@ -108,3 +118,4 @@ if __name__ == "__main__":
     p = p / fname
     source = "a"
     costs = johnson(str(p), source)
+    print(costs)
