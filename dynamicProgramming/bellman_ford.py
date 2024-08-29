@@ -26,8 +26,8 @@ def calcMinEdge(graph, tail, prev, i):
     costs = [float("inf")]
     cost = float("inf")
     for j, head in enumerate(graph[tail]["heads"]):
-        # if j > i:
-        #     break
+        if j > i:
+            break
         cost = prev[head] + graph[tail]["heads"][head]
         costs.append(cost)
     return min(costs)
@@ -50,10 +50,7 @@ def BellmanFord(fname, source="1"):
         for tail in graph:
             if not graph[tail]["inDegree"] > 0:
                 continue
-            if i <= graph[tail]["inDegree"]:
-                curr[tail] = min(prev[tail], calcMinEdge(graph, tail, prev, i))
-            else:
-                curr[tail] = prev[tail]
+            curr[tail] = min(prev[tail], calcMinEdge(graph, tail, prev, i))
 
             if curr[tail] != prev[tail]:
                 stable = False
