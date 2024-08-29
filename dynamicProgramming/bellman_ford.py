@@ -1,4 +1,3 @@
-from typing import Dict
 from pathlib import Path
 from collections import defaultdict
 
@@ -24,36 +23,56 @@ def createBFGraph(fname):
 
 
 def calcMinEdge(graph, tail, prev, i):
+    costs = [float("inf")]
+    cost = float("inf")
     for j, head in enumerate(graph[tail]["heads"]):
-        if j > i:
-            break
-        lht = graph[tail][]
+        # if j > i:
+        #     break
+        cost = prev[head] + graph[tail]["heads"][head]
+        costs.append(cost)
+    return min(costs)
 
 
-def BellmanFord(fname):
+def BellmanFord(fname, source="1"):
     graph = createBFGraph(str(p))
     print(graph)
 
     curr = {tail: float("inf") for tail in graph.keys()}
     prev = {tail: float("inf") for tail in graph.keys()}
 
-    graph["1"]["length"] = 0
-    prev["1"] = 0
+    graph[source]["length"] = 0
+    prev[source] = 0
+    curr[source] = 0
 
     n = len(graph)
-    for i in range(n + 1):
+    for i in range(1, n + 1):
         stable = True
         for tail in graph:
-            if not i <= graph[tail]["inDegree"]:
-                curr = min(
-                    prev[tail],
-                )
+            if not graph[tail]["inDegree"] > 0:
+                continue
+            if i <= graph[tail]["inDegree"]:
+                curr[tail] = min(prev[tail], calcMinEdge(graph, tail, prev, i))
             else:
                 curr[tail] = prev[tail]
+
+            if curr[tail] != prev[tail]:
+                stable = False
+
+            prev = curr.copy()
+
+        if stable == True:
+            return curr
+    return "negative cycle"
 
 
 if __name__ == "__main__":
     p = Path.cwd() / "test_cases/bellmanFord/"
     fname = "small.txt"
+    source = "1"
+    fname = "small2.txt"
+    source = "a"
+    fname = "negcycle1.txt"
+    source = "a"
     p = p / fname
-    BellmanFord(str(p))
+    c = BellmanFord(str(p), source)
+    print(c)
