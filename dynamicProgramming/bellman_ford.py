@@ -33,8 +33,8 @@ def calcMinEdge(graph, tail, prev, i):
     return min(costs)
 
 
-def BellmanFord(fname, source="1"):
-    graph = createBFGraph(str(p))
+def BellmanFord(graph, source="1"):
+    # graph = createBFGraph(str(p))
     print(graph)
 
     curr = {tail: float("inf") for tail in graph.keys()}
@@ -66,10 +66,11 @@ if __name__ == "__main__":
     p = Path.cwd() / "test_cases/bellmanFord/"
     fname = "small.txt"
     source = "1"
-    fname = "small2.txt"
-    source = "a"
-    fname = "negcycle1.txt"
-    source = "a"
+    # fname = "small2.txt"
+    # source = "a"
+    # fname = "negcycle1.txt"
+    # source = "a"
     p = p / fname
-    c = BellmanFord(str(p), source)
+    BFGgraph = createBFGraph(str(p))
+    c = BellmanFord(BFGgraph, source)
     print(c)
