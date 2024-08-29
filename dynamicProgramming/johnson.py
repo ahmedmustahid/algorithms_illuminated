@@ -25,7 +25,16 @@ def convertToDijkstraGraph(BFGraph):
     for tail in BFGraph:
         for head in BFGraph[tail]["heads"]:
             dijGraph[head]["children"][tail] = BFGraph[tail]["heads"][head]
+            # if head not in tails:
+            #     dijGraph[head]["children"] = {}
+            #     dijGraph[head]["length"] = float("inf")
 
+    keys = set(dijGraph.keys())
+    for k in keys:
+        for child in dijGraph[k]["children"]:
+            if not child in keys:
+                dijGraph[child]["children"] = {}
+                dijGraph[child]["length"] = float("inf")
     return dijGraph
 
 
@@ -33,6 +42,7 @@ def reweight(BFGraphDummy, BFCosts):
     offsetForEachVertex = {}
     BFGraphDummy = addBFCostsToGraph(BFGraphDummy, BFCosts)
     BFGraphDummy.pop("s")
+
     for tail in BFGraphDummy:
         BFGraphDummy[tail]["heads"].pop("s")
         lengthTail = BFGraphDummy[tail]["length"]
@@ -65,22 +75,30 @@ def johnson(fname, source="1"):
     if BFcosts == "negative cycle":
         return "negative cycle"
     BFGraphReweighted, offsetForEachVertex = reweight(BFGraphDummy, BFcosts)
-    print(BFGraphReweighted)
+    print(f"BFGraphReweighted {BFGraphReweighted}")
 
+    print()
+    print()
+    print()
     dijGraph = convertToDijkstraGraph(BFGraphReweighted)
-    print(dijGraph)
+    print(f"dijGraph: {dijGraph}")
+    print()
 
-    dijCosts = []
+    costs = []
+    source = "a"
     for node in BFGraph:
-        _, dijCostsUnprocessed = dijkstra(dijGraph, source, target=node)
+        _, dijCostsUnprocessed = dijkstra(dijGraph, source=source, target=node)
         dijCosts = processAfterDij(dijCostsUnprocessed, offsetForEachVertex)
-        print(dijCosts)
-        break
-    return BFcosts
+        costs.append((source, dijCosts))
+    print(costs)
+    return costs
 
 
 if __name__ == "__main__":
-    p = Path.cwd() / "test_cases/bellmanFord/"
+    p = (
+        Path.home()
+        / "work/algorithms_illuminated/dynamicProgramming/test_cases/bellmanFord/"
+    )
     fname = "johnsonSmall.txt"
     source = "1"
     # fname = "small2.txt"

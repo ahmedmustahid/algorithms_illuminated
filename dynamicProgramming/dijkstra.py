@@ -92,9 +92,11 @@ def createNetworkx(graph, tails):
     return dijkstraLens
 
 
-def reconstruction(prev, target):
+def reconstruction(prev, target, source):
     path = [target]
-    while target != "1":
+    while target != source:
+        if target not in prev and target != source:
+            return []
         target = prev[target]
         path.append(target)
     path.reverse()
@@ -102,8 +104,6 @@ def reconstruction(prev, target):
 
 
 def dijkstra(graph, source="1", target=None):
-    # graph = createGraph1(fileName)
-
     graph[source]["length"] = 0
 
     X = set()
@@ -122,7 +122,7 @@ def dijkstra(graph, source="1", target=None):
         X.add(node)
         mins[node] = cost
         if target and node == target:
-            # path = reconstruction(prev, target)
+            path = reconstruction(prev, target, source)
             return path, mins
 
         for c in graph[node]["children"].keys():
@@ -139,28 +139,26 @@ def dijkstra(graph, source="1", target=None):
 
 
 if __name__ == "__main__":
-    # fileName = Path.home()/"work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
-    fileName = (
-        Path.home()
-        / "work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/testCase1.txt"
-    )
+    # fileName = (
+    #     Path.home()
+    #     / "work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/testCase1.txt"
+    # )
+    # nodelist = "1,2,3,4,5,6,7,8".split(",")
+
     fileName = (
         Path.home()
         / "work/algorithms_illuminated/graph_algorithm/Dijkstra/testCases/dijkstraChallenge.txt"
     )
-    graph = createGraph1(fileName)
-    nodelist = "1,2,3,4,5,6,7,8".split(",")
     nodelist = "7,37,59,82,99,115,133,165,188,197".split(",")
-
+    graph = createGraph1(fileName)
+    print(f"graph: {graph}")
     costs = []
     for node in nodelist:
-        _, c = dijkstra(fileName=fileName, target=node)
-        # costs.append(c)
-        # print(f"node {node}, path:{p}, cost:{c}")
+        p, c = dijkstra(graph, target=node)
+        print(f"node {node}, path:{p}, cost:{c}")
+    p, c = dijkstra(graph)
     for node in nodelist:
         costs.append(str(c[node]))
     print(",".join(costs))
-    # p, c = dijkstra(fileName=fileName)
-    # print(f"node {node}, path:{p}, cost:{c}")
-    graph = createGraph1(fileName)
+    print(f"node {node}, path:{p}, cost:{c}")
     print(createNetworkx(graph, tails=nodelist))
