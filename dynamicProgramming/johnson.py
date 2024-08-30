@@ -102,14 +102,14 @@ def johnson(fname, source="1"):
     costs = []
     # source = "b"
     for source in BFGraph:
-        for node in BFGraph:
-            if node == source:
-                continue
-            # print(f"dijGraph: {dijGraph}")
-            _, dijCostsUnprocessed = dijkstra(dijGraph, source=source)
-            # print(dijCostsUnprocessed)
-            dijCosts = processAfterDij(source, dijCostsUnprocessed, offsetForEachVertex)
-            dijGraph = convertLensToInf(dijGraph)
+        # for node in BFGraph:
+        #     if node == source:
+        #         continue
+        # print(f"dijGraph: {dijGraph}")
+        _, dijCostsUnprocessed = dijkstra(dijGraph, source=source)
+        # print(dijCostsUnprocessed)
+        dijCosts = processAfterDij(source, dijCostsUnprocessed, offsetForEachVertex)
+        dijGraph = convertLensToInf(dijGraph)
         costs.append((source, dijCosts))
     return costs
 
@@ -135,6 +135,8 @@ if __name__ == "__main__":
         return mincost
 
     fname = "input_random_24_64.txt"
+    fname = "input_random_26_128.txt"
+    fname = "input_random_35_512.txt"
 
     p = p / fname
     source = "a"
