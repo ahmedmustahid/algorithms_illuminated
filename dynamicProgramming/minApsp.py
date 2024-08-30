@@ -29,11 +29,17 @@ if __name__ == "__main__":
     fname = "input_random_30_256.txt"
     fname = "input_random_26_128.txt"
     fname = "input_random_35_512.txt"
+    # fname = "g3.txt"
+    # fname = "input_random_44_2048.txt"
 
     p = p / fname
     source = "a"
 
     BFGraph = createBFGraph(str(p))
+    # print(BFGraph)
     b = minApsp(BFGraph)
-    ml = getMinLen(b)
-    print(ml)
+    if not isinstance(b, str):
+        ml = getMinLen(b)
+        print(ml)
+    else:
+        print(b)
