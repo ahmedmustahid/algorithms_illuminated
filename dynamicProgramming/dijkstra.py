@@ -104,11 +104,13 @@ def reconstruction(prev, target, source):
 
 
 def dijkstra(graph, source="1", target=None):
+    # print(graph)
     graph[source]["length"] = 0
 
     X = set()
     path = []
-    mins = {source: 0}
+    mins = {node: float("inf") for node in graph}
+    mins[source] = 0
 
     prev = {}
     H = []
