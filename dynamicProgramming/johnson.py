@@ -106,7 +106,7 @@ def johnson(fname, source="1"):
             if node == source:
                 continue
             # print(f"dijGraph: {dijGraph}")
-            _, dijCostsUnprocessed = dijkstra(dijGraph, source=source, target=node)
+            _, dijCostsUnprocessed = dijkstra(dijGraph, source=source)
             # print(dijCostsUnprocessed)
             dijCosts = processAfterDij(source, dijCostsUnprocessed, offsetForEachVertex)
             dijGraph = convertLensToInf(dijGraph)
