@@ -1,5 +1,6 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
+from collections import defaultdict
 from typing import List, Tuple
 
 
@@ -51,14 +52,18 @@ def createBinarySeq(m: int, l: list):
 
 def getSubsets(xys: List[float], binarySeq: List[str]):
     m = len(xys)
-    subsets = []
+    subsets = defaultdict(list)
     for elem in binarySeq:
         elemNums = list(elem)
         subset = []
         for i, elemNum in enumerate(elemNums):
             if elemNum=="1":
                 subset.append(xys[i])
-        subsets.append(subset)
+        key = len(subset)
+        subsets[key].append({"subset": subset, "cost": None})
+    #remove subsets with length 0 or 1
+    subsets.pop(0)
+    subsets.pop(1)
     return subsets
 
 
@@ -80,9 +85,9 @@ if __name__ == "__main__":
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
-    plot(xs, ys)
-    print(xs)
-    print(ys)
+    # plot(xs, ys)
+    # print(xs)
+    # print(ys)
 
     xyDict, dists = getDistances(idToxy)
     print(f"max dist: {max(dists)}")
@@ -91,7 +96,7 @@ if __name__ == "__main__":
     print(f"median {statistics.median(dists)}")
     print(f"xs len: {len(xs)}, dists len {len(dists)}, distsDict len {len(xyDict)}")
     print(getDistances({1:(0,0), 2:(0,2), 3:(0,1)}))
-    print(f"xyDict {xyDict}")
+    # print(f"xyDict {xyDict}")
     createBinarySeq(m=3, l=[0 for _ in range(3)])
     print(globalL)
 
