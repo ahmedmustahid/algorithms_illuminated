@@ -13,8 +13,8 @@ if __name__=="__main__":
     m=len(xys)
     l = [0 for _ in range(m)]
     createBinarySeq(m, l)
-    print(globalL)
-    # subsets = getSubsets(xys, globalL)
+    print(len(globalL))
+    subsets = getSubsets(xys, globalL)
 
-    # print(f"xys len: {len(xys)}")
-    # print(len(subsets))
+    print(f"xys len: {len(xys)}")
+    print(len(subsets))
