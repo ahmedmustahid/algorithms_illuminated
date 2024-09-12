@@ -64,8 +64,14 @@ def getSubsets(xys: List[float], binarySeq: List[str]):
 
 
 def plot(xs, ys):
-    plt.scatter(xs, ys)
+    fig, ax = plt.subplots()
+    ax.scatter(xs, ys)
+
+    for i, txt in enumerate(range(len(xs))):
+        ax.annotate(txt+1, (xs[i], ys[i]))
+    
     plt.savefig("xvsy.png")
+
 
 
 if __name__ == "__main__":
@@ -74,6 +80,7 @@ if __name__ == "__main__":
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
+    plot(xs, ys)
     print(xs)
     print(ys)
 
