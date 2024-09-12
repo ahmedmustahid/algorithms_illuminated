@@ -33,7 +33,7 @@ def getDistances(idToxy):
             if (k,l) in xyDict or (l,k) in xyDict:
                 continue
             dist = calculateDist(idToxy[k],idToxy[l])
-            xyDict[(k,l)] = dist
+            xyDict[(k,l)] = round(dist,2)
             dists.append(dist)
     return xyDict, dists
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     print(f"median {statistics.median(dists)}")
     print(f"xs len: {len(xs)}, dists len {len(dists)}, distsDict len {len(xyDict)}")
     print(getDistances({1:(0,0), 2:(0,2), 3:(0,1)}))
-
+    print(f"xyDict {xyDict}")
     createBinarySeq(m=3, l=[0 for _ in range(3)])
     print(globalL)
 
