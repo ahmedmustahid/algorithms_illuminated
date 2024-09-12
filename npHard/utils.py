@@ -1,11 +1,11 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
-from typing import List
+from typing import List, Tuple
 
 
 def getXYs(fpath):
     xs, ys = [], []
-
+    idToxy = {}
     with open(fpath, "r") as f:
         for i, line in enumerate(f):
             if i == 0:
@@ -13,24 +13,31 @@ def getXYs(fpath):
             x, y = list(map(float, line.split()))
             xs.append(x)
             ys.append(y)
-    return xs, ys
+            idToxy[i] = (x,y)
+    return xs, ys, idToxy
 
 def getCoords(xs, ys):
     return list(zip(xs, ys))
 
-def getDistances(xs,ys):
+def calculateDist(xy1: Tuple[int,int],xy2: Tuple[int,int]):
     import math
-    dists = []
-    xys = getCoords(xs, ys)
+    dist = math.sqrt((xy1[0]-xy2[0])**2 + (xy1[1]-xy2[1])**2)
+    return dist
+
+def getDistances(idToxy):
+    import math
     xyDict = {}
-    for i, xy1 in enumerate(xys):
-        for j, xy2 in enumerate(xys[i+1:]):
-            if (xy1,xy2) in xyDict or (xy2,xy1) in xyDict:
+    dists = [] 
+    for i, k in enumerate(idToxy.keys()):
+        for _, l in enumerate(list(idToxy.keys())[i+1:]):
+            if (k,l) in xyDict or (l,k) in xyDict:
                 continue
-            dist = math.sqrt((xy1[0]- xy2[0])**2 + (xy1[1]- xy2[1])**2)
+            dist = calculateDist(idToxy[k],idToxy[l])
+            xyDict[(k,l)] = dist
             dists.append(dist)
-            xyDict[(xy1,xy2)] = dist
-    return dists, xyDict, xys
+    return xyDict, dists
+
+    
 
 globalL  = []
 def createBinarySeq(m: int, l: list):
@@ -66,18 +73,17 @@ if __name__ == "__main__":
     fname = "tsp.txt"
     fpath = root / fname
 
-    xs, ys = getXYs(str(fpath))
+    xs, ys, idToxy = getXYs(str(fpath))
     print(xs)
     print(ys)
 
-    dists, xyDict, xys = getDistances(xs, ys)
-    print(f"xys: {xys}")
+    xyDict, dists = getDistances(idToxy)
     print(f"max dist: {max(dists)}")
     print(f"min dist: {min(dists)}")
     import statistics
     print(f"median {statistics.median(dists)}")
     print(f"xs len: {len(xs)}, dists len {len(dists)}, distsDict len {len(xyDict)}")
-    print(getDistances([0,0,0, 1],[0,1,2, 1]))
+    print(getDistances({1:(0,0), 2:(0,2), 3:(0,1)}))
 
     createBinarySeq(m=3, l=[0 for _ in range(3)])
     print(globalL)
