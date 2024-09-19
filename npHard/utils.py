@@ -54,10 +54,10 @@ def getSubsets(xys: List[float], binarySeq: List[str]):
     subsets = defaultdict(list)
     for elem in binarySeq:
         elemNums = list(elem)
-        subset = []
+        subset = set()
         for i, elemNum in enumerate(elemNums):
             if elemNum=="1":
-                subset.append(xys[i])
+                subset.add(xys[i])
         key = len(subset)
         subsets[key].append(subset)
     #remove subsets with length 0 or 1
