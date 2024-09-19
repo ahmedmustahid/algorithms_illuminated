@@ -26,7 +26,6 @@ def calculateDist(xy1: Tuple[int,int],xy2: Tuple[int,int]):
     return dist
 
 def getDistances(idToxy):
-    import math
     xyDict = {}
     dists = [] 
     for i, k in enumerate(idToxy.keys()):
@@ -60,7 +59,7 @@ def getSubsets(xys: List[float], binarySeq: List[str]):
             if elemNum=="1":
                 subset.append(xys[i])
         key = len(subset)
-        subsets[key].append({"subset": subset, "cost": None})
+        subsets[key].append(subset)
     #remove subsets with length 0 or 1
     subsets.pop(0)
     subsets.pop(1)
