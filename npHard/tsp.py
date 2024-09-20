@@ -17,15 +17,14 @@ def deleteSmalldists(xyDict, idToxy):
     return idToxy
 
 def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDict[int, List[Set[int]]]):
-    minNode = None
-    A = MinValueDict(minNode=minNode)
+    A = MinValueDict()
 
     for k,v in xyDistDict.items():
         if 1 in k:
             A[k] = v
-            print(f"minNode {A.minNode}")
     pprint.pprint(f"A {A}")
 
+    test = {}
     maxSize = max(subsets)
 
     for size in range(3, maxSize+1):
@@ -35,11 +34,13 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
             for j in subset - {1}:
                 oldKey = subset - {j}
                 for k in subset - {1} - {j}:
-                    newKey = oldKey.union({k,j})
+                    # newKey = oldKey.union({k,j})
                     print("------------")
                     print(f"subset {subset}")
                     print(f"oldKey: {oldKey}[{k}]")
-                    print(f"newKey: {newKey}[{j}]")
+                    print(f"newKey: {subset}[{j}]")
+
+                    # newval = xyDistDict[frozenset(oldKey)] + xyDistDict[frozenset()]
                     print("------------")
 
 
