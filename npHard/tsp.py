@@ -50,8 +50,13 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
                         continue
                     endNode = j
                     print(f"startnode:{startNode}, endNode: {endNode}")
-                    newval = test[frozenset(oldKey)] + xyDistDict[frozenset((startNode, endNode))]
-                    print(f"newval: {test[frozenset(oldKey)]}+{xyDistDict[frozenset((startNode, endNode))]}")
+                    if size < maxSize:
+                        newval = test[frozenset(oldKey)] + xyDistDict[frozenset((startNode, endNode))]
+                        print(f"newval: {test[frozenset(oldKey)]}+{xyDistDict[frozenset((startNode, endNode))]}")
+                    else:
+                        newval = test[frozenset(oldKey)] + xyDistDict[frozenset((startNode, endNode))] + xyDistDict[frozenset((endNode, 1))]
+                        print(f"newval: {test[frozenset(oldKey)]}+{xyDistDict[frozenset((startNode, endNode))]};{xyDistDict[frozenset((endNode, 1))]}")
+
                     newval = round(newval,2)
                     heapq.heappush(h, (newval, (k,j)))
                     print("------------")
@@ -69,8 +74,10 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
 if __name__=="__main__":
     root = Path.home() / "work/algorithms_illuminated/npHard/test_cases"
     fname = "tsp.txt"
-    fname = "input_float_11_4.txt"
     fname = "input_float_10_4.txt"
+    fname = "input_float_11_4.txt"
+    fname = "input_float_12_4.txt"
+    fname = "input_float_20_6.txt"
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
