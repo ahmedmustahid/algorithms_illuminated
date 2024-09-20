@@ -1,7 +1,9 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Set
+import pprint
+import sys
 
 class MinValueDict(dict):
     def __init__(self, minNode: Tuple[int,int]):
@@ -48,7 +50,11 @@ def getDistances(idToxy):
             dists.append(dist)
     return xyDict, dists
 
-    
+DIST_THRESH_LARGE=3000
+def getLargeDists(xyDistDict: Dict[Tuple[int, int], float]):
+    xyLargeDists = [k for k in xyDistDict.keys() if xyDistDict[k]>=DIST_THRESH_LARGE]
+    return xyLargeDists
+
 
 globalL  = []
 def createBinarySeq(m: int, l: list):
@@ -76,6 +82,27 @@ def getSubsets(xys: List[float], binarySeq: List[str]):
     subsets.pop(1)
     return subsets
 
+def power_set(A, xyLargeDists: Set[Tuple[int, int]]): 
+    subsets = []
+    N = len(A)
+
+    # iterate over each subset
+    for mask in range(1<<N):
+        subset = []
+        for n in range(N):
+            if ((mask>>n)&1) == 1:
+                subset.append(A[n])
+
+        subsets.append(subset)
+
+    S = defaultdict(list) 
+    for i, subset in enumerate(subsets):
+        size = len(subset)
+        if size==0 or size==1:
+            continue
+        S[size].append(set(subset))
+
+    return S
 
 
 def plot(xs, ys):
@@ -100,6 +127,10 @@ if __name__ == "__main__":
     # print(ys)
 
     xyDict, dists = getDistances(idToxy)
+    xyLargeDists = getLargeDists(xyDistDict=xyDict)
+    pprint.pprint(xyLargeDists) 
+
+
     print(f"max dist: {max(dists)}")
     print(f"min dist: {min(dists)}")
     import statistics
@@ -113,3 +144,7 @@ if __name__ == "__main__":
     xys = [0,1,2]
     print(getSubsets(xys, globalL))
     
+    A = [4,5,7]
+
+    # print subsets
+    print(power_set(A))
