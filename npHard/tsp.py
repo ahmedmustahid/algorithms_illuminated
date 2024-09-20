@@ -2,14 +2,18 @@ from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, Mi
 from pathlib import Path
 from typing import Tuple, Dict, List, DefaultDict, Set
 import heapq
+import pprint
 from pprint import pformat
 import logging
+import sys
 
 
 logging.basicConfig(filename='myapp.log',filemode="w", level=logging.INFO)
-DIST_THRESH=0
+DIST_THRESH_LARGE=3000
+DIST_THRESH_SMALL=400
 def deleteSmalldists(xyDict, idToxy):
-    delKeys = {xy for xy in xyDict.keys() if xyDict[xy]<DIST_THRESH}
+    delKeys = {xy for xy in xyDict.keys() if xyDict[xy]>DIST_THRESH_LARGE }
+    # delKeys = {xy for xy in xyDict.keys() if xyDict[xy]<DIST_THRESH_SMALL }
 
     def removeKey(key, idToxy):
         if key in idToxy:
@@ -84,27 +88,38 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
 
 if __name__=="__main__":
     root = Path.home() / "work/algorithms_illuminated/npHard/test_cases"
-    fname = "tsp.txt"
     fname = "input_float_11_4.txt"
     fname = "input_float_12_4.txt"
-    fname = "input_float_20_6.txt"
     fname = "input_float_10_4.txt"
+    fname = "input_float_20_6.txt"
+    fname = "input_float_34_10.txt"
+    fname = "tsp.txt"
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
     xyDistDict, dists = getDistances(idToxy)
+    print(f"len before {len(xyDistDict)}")
+    xyDistDict = {k:v for k,v in xyDistDict.items() if v<=DIST_THRESH_LARGE}
     # pprint.pprint(f"dists {dists}")
-    # pprint.pprint(xyDistDict)
+    print(f"len after {len(xyDistDict)}")
+    pprint.pprint(xyDistDict)
 
-    idToxy = deleteSmalldists(xyDistDict, idToxy)
-    m=len(idToxy)
+    # idToxy = deleteSmalldists(xyDistDict, idToxy)
+    allPairs = set()
+
+    for ks in xyDistDict.keys():
+        for k in ks:
+            allPairs.add(k)
+
+    m=len(allPairs)
     l = [0 for _ in range(m)]
     createBinarySeq(m, l)
     # print(f"binary digits lens: {len(globalL)}")
-    subsets = getSubsets(list(idToxy.keys()), globalL)
+    subsets = getSubsets(list(allPairs), globalL)
     # pprint.pprint(subsets)
     # print(f"xys len: {len(list(idToxy.keys()))}")
-    # print(f"random subset : {subsets[2][:10]}")
+    print(f"random subset : {subsets[2][:10]}")
 
+    sys.exit()
     test = bellmanHeldKarp(xyDistDict, subsets)
     print(test)
