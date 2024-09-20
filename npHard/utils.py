@@ -3,6 +3,17 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from typing import List, Tuple
 
+class MinValueDict(dict):
+    def __init__(self, minNode: Tuple[int,int]):
+        self.minNode = minNode
+    def __setitem__(self, key: Tuple[int, int], value: float) -> None:
+        if key in self:
+            if value < self[key]:
+                super().__setitem__(key, value)
+                self.minNode = key
+        else:
+            super().__setitem__(key, value)
+
 
 def getXYs(fpath):
     xs, ys = [], []
