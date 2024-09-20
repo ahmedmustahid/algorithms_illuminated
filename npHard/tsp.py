@@ -1,6 +1,7 @@
 from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, MinValueDict
 from pathlib import Path
 from typing import Tuple, Dict, List, DefaultDict, Set
+import heapq
 import pprint
 import random
 DIST_THRESH=0
@@ -17,6 +18,8 @@ def deleteSmalldists(xyDict, idToxy):
     return idToxy
 
 def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDict[int, List[Set[int]]]):
+
+    xyDistDict = {frozenset(k):v for k,v in xyDistDict.items()}    
     A = MinValueDict()
 
     for k,v in xyDistDict.items():
@@ -31,17 +34,25 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
         for subset in subsets[size]:
             if 1 not in subset:
                 continue
+            h = []
             for j in subset - {1}:
                 oldKey = subset - {j}
                 for k in subset - {1} - {j}:
-                    # newKey = oldKey.union({k,j})
                     print("------------")
                     print(f"subset {subset}")
                     print(f"oldKey: {oldKey}[{k}]")
                     print(f"newKey: {subset}[{j}]")
 
-                    # newval = xyDistDict[frozenset(oldKey)] + xyDistDict[frozenset()]
+                    newval = xyDistDict[frozenset(oldKey)] + xyDistDict[frozenset((k,j))]
+                    newval = round(newval,2)
+                    heapq.heappush(h, (newval, (k,j)))
                     print("------------")
+            minVal, minNode = heapq.heappop(h)
+            test[frozenset(subset)] = minVal
+
+            print(f"minVal {minVal}, minNode {minNode}")
+            pprint.pprint(test)
+            print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
 
 if __name__=="__main__":
