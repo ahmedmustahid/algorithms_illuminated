@@ -6,7 +6,7 @@ from pprint import pformat
 import logging
 
 
-logging.basicConfig(filename='myapp.log',filemode="w", level=logging.DEBUG)
+logging.basicConfig(filename='myapp.log',filemode="w", level=logging.INFO)
 DIST_THRESH=0
 def deleteSmalldists(xyDict, idToxy):
     delKeys = {xy for xy in xyDict.keys() if xyDict[xy]<DIST_THRESH}
@@ -69,12 +69,18 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
             test[frozenset(subset)] = minVal
 
 
+
             logging.debug(f"minVal {minVal}, minNode {minNode}")
             logging.debug(f"minNodes\n{pformat(minNodes)}")
             # print("======")
             logging.debug(f"test\n{pformat(test)}")
             # print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        #deleting unnecessary elements
+        test = {k:v for k,v in test.items() if not len(k)<size}
+        minNodes = {k:v for k,v in minNodes.items() if not len(k)<size}
+        logging.debug(f"test size\n{pformat(test)}")
 
+    return test
 
 if __name__=="__main__":
     root = Path.home() / "work/algorithms_illuminated/npHard/test_cases"
@@ -100,4 +106,5 @@ if __name__=="__main__":
     # print(f"xys len: {len(list(idToxy.keys()))}")
     # print(f"random subset : {subsets[2][:10]}")
 
-    bellmanHeldKarp(xyDistDict, subsets)
+    test = bellmanHeldKarp(xyDistDict, subsets)
+    print(test)
