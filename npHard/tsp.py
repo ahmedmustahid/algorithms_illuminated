@@ -45,8 +45,13 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
                     print(f"subset {subset}")
                     print(f"oldKey: {oldKey}[{k}]")
                     print(f"newKey: {subset}[{j}]")
-
-                    newval = test[frozenset(oldKey)] + xyDistDict[frozenset((k,j))]
+                    startNode = minNodes[frozenset(oldKey)][1]
+                    if k!=startNode:
+                        continue
+                    endNode = j
+                    print(f"startnode:{startNode}, endNode: {endNode}")
+                    newval = test[frozenset(oldKey)] + xyDistDict[frozenset((startNode, endNode))]
+                    print(f"newval: {test[frozenset(oldKey)]}+{xyDistDict[frozenset((startNode, endNode))]}")
                     newval = round(newval,2)
                     heapq.heappush(h, (newval, (k,j)))
                     print("------------")
