@@ -18,6 +18,7 @@ def deleteSmalldists(xyDict, idToxy):
     return idToxy
 
 def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDict[int, List[Set[int]]]):
+    minNodes = {frozenset(k):k for k,v in xyDistDict.items() if 1 in k}
 
     xyDistDict = {frozenset(k):v for k,v in xyDistDict.items()}    
     A = MinValueDict()
@@ -27,7 +28,8 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
             A[k] = v
     pprint.pprint(f"A {A}")
 
-    test = {}
+    test = {frozenset(k):v for k,v in xyDistDict.items() if 1 in k}
+    print(minNodes)
     maxSize = max(subsets)
 
     for size in range(3, maxSize+1):
@@ -39,18 +41,22 @@ def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDic
                 oldKey = subset - {j}
                 for k in subset - {1} - {j}:
                     print("------------")
+                    print(f"k:{k},j:{j}")
                     print(f"subset {subset}")
                     print(f"oldKey: {oldKey}[{k}]")
                     print(f"newKey: {subset}[{j}]")
 
-                    newval = xyDistDict[frozenset(oldKey)] + xyDistDict[frozenset((k,j))]
+                    newval = test[frozenset(oldKey)] + xyDistDict[frozenset((k,j))]
                     newval = round(newval,2)
                     heapq.heappush(h, (newval, (k,j)))
                     print("------------")
             minVal, minNode = heapq.heappop(h)
+            minNodes[frozenset(subset)] = minNode
             test[frozenset(subset)] = minVal
 
             print(f"minVal {minVal}, minNode {minNode}")
+            pprint.pprint(minNodes)
+            print("======")
             pprint.pprint(test)
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
