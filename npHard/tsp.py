@@ -97,20 +97,20 @@ if __name__=="__main__":
     print(f"len after {len(xyDistDict)}")
     pprint.pprint(xyDistDict)
 
-    xys = list(zip(xs,ys))
-    clusters = getClusters(points=xys,n_clusters=6)
-    idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
-    pprint.pprint(idclusters)
+    # xys = list(zip(xs,ys))
+    # clusters = getClusters(points=xys,n_clusters=6)
+    # idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
+    # pprint.pprint(idclusters)
 
 
-    # allPairs = set()
+    allPairs = set()
 
-    # for ks in xyDistDict.keys():
-    #     for k in ks:
-    #         allPairs.add(k)
+    for ks in xyDistDict.keys():
+        for k in ks:
+            allPairs.add(k)
 
-    # DIST_THRESH_LARGE=10
-    # xyLargeDistDict = getLargeDists(xyDistDict, disThreshold=DIST_THRESH_LARGE)
+    DIST_THRESH_LARGE=10
+    xyLargeDistDict = getLargeDists(xyDistDict, disThreshold=DIST_THRESH_LARGE)
 
     subsets = power_set(list(allPairs), xyLargeDistDict)
     print(f"random subset : {subsets[2][:10]}")
