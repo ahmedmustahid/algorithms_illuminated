@@ -1,4 +1,4 @@
-from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, MinValueDict, power_set, getLargeDists, totalSubsetNum
+from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, MinValueDict, power_set, getLargeDists, totalSubsetNum, createPairsFromList
 from clustering import convertPointToID, getClusters, edgePointsFromClusters, getClustersOfIds
 from pathlib import Path
 from typing import Tuple, Dict, List, DefaultDict, Set
@@ -26,10 +26,7 @@ def deleteSmalldists(xyDict, idToxy):
 
 def bellmanHeldKarp(xyDistDict:Dict[Tuple[int, int], float], subsets: DefaultDict[int, List[Set[int]]]):
     minNodes = {frozenset(k):k for k,v in xyDistDict.items() if 1 in k}
-
     xyDistDict = {frozenset(k):v for k,v in xyDistDict.items()}    
-
-
     test = {frozenset(k):v for k,v in xyDistDict.items() if 1 in k}
     # print(minNodes)
     maxSize = max(subsets)
@@ -97,14 +94,15 @@ if __name__=="__main__":
     print(f"len after {len(xyDistDict)}")
     pprint.pprint(xyDistDict)
 
-    # xys = list(zip(xs,ys))
-    # clusters = getClusters(points=xys,n_clusters=2)
-    # idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
-    # pprint.pprint(idclusters)
+    xys = list(zip(xs,ys))
+    clusters = getClusters(points=xys,n_clusters=2)
+    idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
+    pprint.pprint(idclusters)
 
+    print(createPairsFromList(idclusters["c1"]))
+    sys.exit()
 
     allPairs = set()
-
     for ks in xyDistDict.keys():
         for k in ks:
             allPairs.add(k)

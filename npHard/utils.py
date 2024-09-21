@@ -4,6 +4,7 @@ from collections import defaultdict
 from typing import List, Tuple, Dict, Set, Iterable
 import pprint
 import sys
+import itertools
 from clustering import convertPointToID, getClusters, edgePointsFromClusters, getClustersOfIds
 
 class MinValueDict(dict):
@@ -50,6 +51,12 @@ def getDistances(idToxy):
             xyDict[(k,l)] = round(dist,2)
             dists.append(dist)
     return xyDict, dists
+
+def createPairsFromList(idList: List[int])->Set[Tuple[int, int]]:
+    pairs = set(itertools.combinations(idList,2))
+    return pairs
+
+
 
 def getLargeDists(xyDistDict: Dict[Tuple[int, int], float], disThreshold: int):
     xyLargeDists = set(frozenset(k) for k in xyDistDict.keys() if xyDistDict[k]>=disThreshold)
