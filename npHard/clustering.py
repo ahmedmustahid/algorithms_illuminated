@@ -4,6 +4,7 @@ from scipy.spatial.distance import cdist
 from collections import defaultdict
 from typing import List, Tuple, Dict, Iterable
 from numpy.typing import NDArray
+import heapq
 import pprint
 import math
 
@@ -45,11 +46,13 @@ def getClustersOfIds(clustersDict: defaultdict[List[Tuple[float,float]]], idToxy
 # 2. Each list element contains (x,y) coordinates of points in each cluster
 # This is already done in the previous step
 
-def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]])->List[Tuple[float,float]]:
+def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]], idToxy)->List[Tuple[float,float]]:
     # 3. Find the point at the edge closest to other clusters for each cluster
     edge_point_ids = []
     travelled = set()
+    idxes = dict()
     for cid,cluster in clusters.items():
+        minCluster2Dist = []
         for cid2, cluster2 in clusters.items():
             if cid==cid2:
                 continue
@@ -58,26 +61,29 @@ def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]])->List[T
                 
             #calculate minimum distance in an array
             minDist = np.inf
-            idxes = {}
             for i, p in enumerate(cluster):
                 for j, p2 in enumerate(cluster2):
                     dist = math.dist(p,p2)
                     if dist < minDist:
                         minDist = dist
-                        idxes[(cid, cid2)]=((i,j), minDist)
-            print(f"cid {cid}, cid1 {cid2}")
-            print(f"smallest dist: {minDist}")
-            print(f"idxes {idxes}")
-
-            edge_point_ids.append(idxes) 
+                        # id1 = convertPointToID(p, idToxy)#id1 from key cluster
+                        # id2 = convertPointToID(p2, idToxy)#id2 from value cluster 
+                        # # idxes[cid][cid2]=((id1,id2), round(minDist,2))
+                        # idxes[frozenset((cid, cid2))]=((id1,id2), minDist)
+                        heapq.heappush(minCluster2Dist, (minDist,((cid,cid2),(p,p2))))
             travelled.add(frozenset((cid, cid2)))
-    
-    # temp = defaultdict(dict)
-    # for edgePoint in edge_point_ids:
-
-
-
-    return edge_point_ids
+        if cid==cid2:
+            continue
+        mdist, m = heapq.heappop(minCluster2Dist) 
+        print(mdist)
+        print(m)
+        key, (p1, p2) = m
+        id1 = convertPointToID(p1, idToxy)
+        id2 = convertPointToID(p2, idToxy)
+        idxes[frozenset(key)] = ((id1, id2), mdist)
+        # break
+    print(f"idxes len {len(idxes)}")
+    return idxes
     # for i, cluster in clusters.items():
     #     other_points = np.array([p for j, c in clusters.items() for p in c if j != i])
     #     distances = cdist(np.array(cluster), other_points)

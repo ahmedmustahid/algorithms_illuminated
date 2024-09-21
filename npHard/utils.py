@@ -149,14 +149,13 @@ if __name__ == "__main__":
     idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
     pprint.pprint(idclusters)
 
-    edgepointIds = edgePointsFromClusters(clusters=clusters)
-    pprint.pprint(f"edgepointIDs {edgepointIds}")
+    edgepointIds = edgePointsFromClusters(clusters=clusters, idToxy=idToxy)
+    pprint.pprint(f"edgepointIDs\n{edgepointIds}")
     print(f"edgepointIDs len {len(edgepointIds)}")
-    sys.exit()
 
     xyDict, dists = getDistances(idToxy)
-    # pprint.pprint(xyDict)
-    # sys.exit()
+    pprint.pprint(xyDict)
+    sys.exit()
 
     DIST_THRESH_LARGE=3000
     xyLargeDists = getLargeDists(xyDistDict=xyDict, disThreshold=DIST_THRESH_LARGE)
