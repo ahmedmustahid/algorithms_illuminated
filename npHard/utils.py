@@ -1,9 +1,10 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from typing import List, Tuple, Dict, Set
+from typing import List, Tuple, Dict, Set, Iterable
 import pprint
 import sys
+from clustering import getClusters, edgePointsFromClusters, getClustersOfIds
 
 class MinValueDict(dict):
     def __init__(self, minNode: Tuple[int,int]):
@@ -50,9 +51,8 @@ def getDistances(idToxy):
             dists.append(dist)
     return xyDict, dists
 
-DIST_THRESH_LARGE=3000
-def getLargeDists(xyDistDict: Dict[Tuple[int, int], float]):
-    xyLargeDists = [k for k in xyDistDict.keys() if xyDistDict[k]>=DIST_THRESH_LARGE]
+def getLargeDists(xyDistDict: Dict[Tuple[int, int], float], disThreshold: int):
+    xyLargeDists = [set(k) for k in xyDistDict.keys() if xyDistDict[k]>=disThreshold]
     return xyLargeDists
 
 
@@ -82,7 +82,7 @@ def getSubsets(xys: List[float], binarySeq: List[str]):
     subsets.pop(1)
     return subsets
 
-def power_set(A, xyLargeDists: Set[Tuple[int, int]]): 
+def power_set(A: Iterable, xyLargeDists: Set[Tuple[int, int]]): 
     subsets = []
     N = len(A)
 
@@ -92,6 +92,16 @@ def power_set(A, xyLargeDists: Set[Tuple[int, int]]):
         for n in range(N):
             if ((mask>>n)&1) == 1:
                 subset.append(A[n])
+        subset = set(subset)
+
+        if len(subset)==2:
+            if subset in xyLargeDists:
+                print("omitting")
+                continue
+        else:
+            for largeelem in xyLargeDists:
+                if subset.intersection(set(largeelem)):
+                    continue
 
         subsets.append(subset)
 
@@ -100,7 +110,7 @@ def power_set(A, xyLargeDists: Set[Tuple[int, int]]):
         size = len(subset)
         if size==0 or size==1:
             continue
-        S[size].append(set(subset))
+        S[size].append(subset)
 
     return S
 
@@ -114,22 +124,50 @@ def plot(xs, ys):
     
     plt.savefig("xvsy.png")
 
-
+def totalSubsetNum(subsets):
+    total = 0
+    for k,v in subsets.items():
+        total+= len(subsets[k])
+    return total
 
 if __name__ == "__main__":
     root = Path.home() / "work/algorithms_illuminated/npHard/test_cases"
+    fname = "input_float_34_10.txt"
     fname = "tsp.txt"
+    fname = "input_float_74_20.txt"
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
     # plot(xs, ys)
-    # print(xs)
-    # print(ys)
+    # sys.exit()
+    print(xs)
+    print(ys)
+    print(idToxy)
+    xys = list(zip(xs,ys))
+    clusters = getClusters(points=xys,n_clusters=6)
+    pprint.pprint(clusters)
+    idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
+    pprint.pprint(idclusters)
+    sys.exit()
 
     xyDict, dists = getDistances(idToxy)
-    xyLargeDists = getLargeDists(xyDistDict=xyDict)
-    pprint.pprint(xyLargeDists) 
+    # pprint.pprint(xyDict)
+    # sys.exit()
 
+    DIST_THRESH_LARGE=3000
+    xyLargeDists = getLargeDists(xyDistDict=xyDict, disThreshold=DIST_THRESH_LARGE)
+    pprint.pprint(xyLargeDists) 
+    allPairs = set()
+
+    for ks in xyDict.keys():
+        for k in ks:
+            allPairs.add(k)
+    subsets = power_set(list(allPairs), xyLargeDists)
+
+    print(f"random subset : {subsets[2][:10]}")
+    print(f"subset len: {totalSubsetNum(subsets)}")
+
+    sys.exit()
 
     print(f"max dist: {max(dists)}")
     print(f"min dist: {min(dists)}")
@@ -144,7 +182,3 @@ if __name__ == "__main__":
     xys = [0,1,2]
     print(getSubsets(xys, globalL))
     
-    A = [4,5,7]
-
-    # print subsets
-    print(power_set(A))
