@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import List, Tuple, Dict, Set, Iterable
 import pprint
 import sys
-from clustering import getClusters, edgePointsFromClusters, getClustersOfIds
+from clustering import convertPointToID, getClusters, edgePointsFromClusters, getClustersOfIds
 
 class MinValueDict(dict):
     def __init__(self, minNode: Tuple[int,int]):
@@ -148,6 +148,10 @@ if __name__ == "__main__":
     pprint.pprint(clusters)
     idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
     pprint.pprint(idclusters)
+
+    edgepointIds = edgePointsFromClusters(clusters=clusters)
+    pprint.pprint(f"edgepointIDs {edgepointIds}")
+    print(f"edgepointIDs len {len(edgepointIds)}")
     sys.exit()
 
     xyDict, dists = getDistances(idToxy)

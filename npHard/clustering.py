@@ -4,6 +4,8 @@ from scipy.spatial.distance import cdist
 from collections import defaultdict
 from typing import List, Tuple, Dict, Iterable
 from numpy.typing import NDArray
+import pprint
+import math
 
 
 
@@ -45,28 +47,65 @@ def getClustersOfIds(clustersDict: defaultdict[List[Tuple[float,float]]], idToxy
 
 def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]])->List[Tuple[float,float]]:
     # 3. Find the point at the edge closest to other clusters for each cluster
-    edge_points = []
+    edge_point_ids = []
+    travelled = set()
+    for cid,cluster in clusters.items():
+        for cid2, cluster2 in clusters.items():
+            if cid==cid2:
+                continue
+            if set(frozenset((cid,cid2))) in travelled:
+                continue
+                
+            #calculate minimum distance in an array
+            minDist = np.inf
+            idxes = {}
+            for i, p in enumerate(cluster):
+                for j, p2 in enumerate(cluster2):
+                    dist = math.dist(p,p2)
+                    if dist < minDist:
+                        minDist = dist
+                        idxes[(cid, cid2)]=((i,j), minDist)
+            print(f"cid {cid}, cid1 {cid2}")
+            print(f"smallest dist: {minDist}")
+            print(f"idxes {idxes}")
+
+            edge_point_ids.append(idxes) 
+            travelled.add(frozenset((cid, cid2)))
     
-    for i, cluster in enumerate(clusters):
-        other_points = np.array([p for j, c in enumerate(clusters) for p in c if j != i])
-        distances = cdist(np.array(cluster), other_points)
-        closest_point_index = np.argmin(np.min(distances, axis=1))
-        edge_points.append(cluster[closest_point_index])
-    return edge_points
+    # temp = defaultdict(dict)
+    # for edgePoint in edge_point_ids:
+
+
+
+    return edge_point_ids
+    # for i, cluster in clusters.items():
+    #     other_points = np.array([p for j, c in clusters.items() for p in c if j != i])
+    #     distances = cdist(np.array(cluster), other_points)
+    #     closest_point_index = np.argmin(np.min(distances, axis=1))
+    #     edge_points.append(cluster[closest_point_index])
+    # return edge_points
 
 # def edgePointsFromClustersByID(clusters:List[List[Tuple[float,float]]])->List[Tuple[float,float]]:
 
 
+
 if __name__=="__main__":
+
     # Sample data: 25 random points
     np.random.seed(42)
     points = np.random.rand(25, 2) * 10
 
     clusters = getClusters(points=points, n_clusters=3)
+    pprint.pprint(clusters) 
+
+
     edge_points = edgePointsFromClusters(clusters)
+    pprint.pprint(edge_points)
+
+
     # Print results
-    for i, (cluster, edge_point) in enumerate(zip(clusters, edge_points)):
-        print(f"Cluster {i + 1}:")
-        print(f"  Points: {cluster}")
-        print(f"  Edge point closest to other clusters: {edge_point}")
-        print()
+    # for i, (cluster, edge_point) in enumerate(zip(clusters.keys(), edge_points)):
+    #     print(f"Cluster {i + 1}:")
+    #     print(f"  Points: {cluster[i]}")
+    #     print(f"  Edge point closest to other clusters: {edge_point}")
+    #     print()
