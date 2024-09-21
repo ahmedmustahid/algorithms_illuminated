@@ -1,4 +1,5 @@
-from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, MinValueDict, power_set
+from utils import getXYs, getDistances, globalL, getSubsets, createBinarySeq, MinValueDict, power_set, getLargeDists, totalSubsetNum
+from clustering import convertPointToID, getClusters, edgePointsFromClusters, getClustersOfIds
 from pathlib import Path
 from typing import Tuple, Dict, List, DefaultDict, Set
 import heapq
@@ -9,7 +10,6 @@ import sys
 
 
 logging.basicConfig(filename='myapp.log',filemode="w", level=logging.INFO)
-DIST_THRESH_LARGE=3000
 DIST_THRESH_SMALL=400
 def deleteSmalldists(xyDict, idToxy):
     delKeys = {xy for xy in xyDict.keys() if xyDict[xy]>DIST_THRESH_LARGE }
@@ -86,9 +86,9 @@ if __name__=="__main__":
     fname = "input_float_12_4.txt"
     fname = "input_float_20_6.txt"
     fname = "input_float_10_4.txt"
-    fname = "input_float_74_20.txt"
-    fname = "tsp.txt"
     fname = "input_float_34_10.txt"
+    fname = "tsp.txt"
+    fname = "input_float_74_20.txt"
     fpath = root / fname
 
     xs, ys, idToxy = getXYs(str(fpath))
@@ -97,14 +97,24 @@ if __name__=="__main__":
     print(f"len after {len(xyDistDict)}")
     pprint.pprint(xyDistDict)
 
+    # xys = list(zip(xs,ys))
+    # clusters = getClusters(points=xys,n_clusters=6)
+    # idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
+    # pprint.pprint(idclusters)
+
+
     allPairs = set()
 
     for ks in xyDistDict.keys():
         for k in ks:
             allPairs.add(k)
 
-    subsets = power_set(list(allPairs))
+    DIST_THRESH_LARGE=10
+    xyLargeDistDict = getLargeDists(xyDistDict, disThreshold=DIST_THRESH_LARGE)
+
+    subsets = power_set(list(allPairs), xyLargeDistDict)
     print(f"random subset : {subsets[2][:10]}")
+    print(f"total subset num {totalSubsetNum(subsets)}")
 
     test = bellmanHeldKarp(xyDistDict, subsets)
     print(test)

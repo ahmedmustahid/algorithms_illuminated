@@ -145,7 +145,6 @@ if __name__ == "__main__":
     print(idToxy)
     xys = list(zip(xs,ys))
     clusters = getClusters(points=xys,n_clusters=6)
-    pprint.pprint(clusters)
     idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
     pprint.pprint(idclusters)
 

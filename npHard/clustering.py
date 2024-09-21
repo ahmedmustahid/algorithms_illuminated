@@ -70,6 +70,7 @@ def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]], idToxy)
                         # id2 = convertPointToID(p2, idToxy)#id2 from value cluster 
                         # # idxes[cid][cid2]=((id1,id2), round(minDist,2))
                         # idxes[frozenset((cid, cid2))]=((id1,id2), minDist)
+                        minDist = round(minDist, 2)
                         heapq.heappush(minCluster2Dist, (minDist,((cid,cid2),(p,p2))))
             travelled.add(frozenset((cid, cid2)))
         if cid==cid2:
@@ -82,7 +83,6 @@ def edgePointsFromClusters(clusters:Dict[str, List[Tuple[float,float]]], idToxy)
         id2 = convertPointToID(p2, idToxy)
         idxes[frozenset(key)] = ((id1, id2), mdist)
         # break
-    print(f"idxes len {len(idxes)}")
     return idxes
     # for i, cluster in clusters.items():
     #     other_points = np.array([p for j, c in clusters.items() for p in c if j != i])
