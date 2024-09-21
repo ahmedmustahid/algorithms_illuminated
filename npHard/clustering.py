@@ -5,11 +5,10 @@ from typing import List, Tuple
 
 
 
-def getClusters(points:np.ndarray)->List[List[Tuple[float,float]]]:
+def getClusters(points:np.ndarray, n_clusters: int)->List[List[Tuple[float,float]]]:
     """
      Perform K-means clustering. Get clusters with points
     """
-    n_clusters = 3  # You can change this to the desired number of clusters
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     kmeans.fit(points)
 
@@ -39,7 +38,7 @@ if __name__=="__main__":
     np.random.seed(42)
     points = np.random.rand(25, 2) * 10
 
-    clusters = getClusters(points=points)
+    clusters = getClusters(points=points, n_clusters=3)
     edge_points = edgePointsFromClusters(clusters)
     # Print results
     for i, (cluster, edge_point) in enumerate(zip(clusters, edge_points)):
