@@ -52,7 +52,7 @@ def getDistances(idToxy):
     return xyDict, dists
 
 def getLargeDists(xyDistDict: Dict[Tuple[int, int], float], disThreshold: int):
-    xyLargeDists = [set(k) for k in xyDistDict.keys() if xyDistDict[k]>=disThreshold]
+    xyLargeDists = set(frozenset(k) for k in xyDistDict.keys() if xyDistDict[k]>=disThreshold)
     return xyLargeDists
 
 
@@ -86,6 +86,7 @@ def power_set(A: Iterable, xyLargeDists: Set[Tuple[int, int]]):
     subsets = []
     N = len(A)
 
+    total = 0 
     # iterate over each subset
     for mask in range(1<<N):
         subset = []
@@ -94,16 +95,22 @@ def power_set(A: Iterable, xyLargeDists: Set[Tuple[int, int]]):
                 subset.append(A[n])
         subset = set(subset)
 
+        if 1 not in subset:
+            continue
+
         if len(subset)==2:
             if subset in xyLargeDists:
-                print("omitting")
+                # print(f"omitting {subset}")
+                total += 1
                 continue
         else:
             for largeelem in xyLargeDists:
                 if subset.intersection(set(largeelem)):
+                    # print(f"omitting {subset}")
+                    total += 1
                     continue
-
         subsets.append(subset)
+    print(f"total removed {total}")
 
     S = defaultdict(list) 
     for i, subset in enumerate(subsets):
@@ -144,7 +151,7 @@ if __name__ == "__main__":
     print(ys)
     print(idToxy)
     xys = list(zip(xs,ys))
-    clusters = getClusters(points=xys,n_clusters=6)
+    clusters = getClusters(points=xys,n_clusters=2)
     idclusters = getClustersOfIds(clustersDict=clusters, idToxy=idToxy)
     pprint.pprint(idclusters)
 
@@ -156,7 +163,7 @@ if __name__ == "__main__":
     pprint.pprint(xyDict)
     sys.exit()
 
-    DIST_THRESH_LARGE=3000
+    DIST_THRESH_LARGE=15
     xyLargeDists = getLargeDists(xyDistDict=xyDict, disThreshold=DIST_THRESH_LARGE)
     pprint.pprint(xyLargeDists) 
     allPairs = set()
