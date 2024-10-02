@@ -7,6 +7,22 @@ from pathlib import Path
 import pprint
 import sys
 
+def randomLiteralBit(literalBitDict, clausesDict):
+    for key in literalBitDict:
+        if key>0:
+            literalBitDict[key] = random.choice((0,1))
+            if -key in literalBitDict:
+                literalBitDict[-key] = 0 if literalBitDict[key]==1 else 1
+    
+    for key in clausesDict.keys():
+        if len(key)==1:
+            x = next(iter(key))
+            clausesDict[key] = literalBitDict[x]
+        else:
+            x1, x2 = key
+            clausesDict[key] = literalBitDict[x1] or literalBitDict[x2]
+    return literalBitDict, clausesDict
+
 def getZeroClause(clausesDict):
     zeroClauses = []
     for k,v in clausesDict.items():
@@ -26,23 +42,35 @@ def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
     logn = math.ceil(math.log2(n))
 
     for i in range(logn):
+        literalBitDict, clausesDict = randomLiteralBit(literalBitDict, clausesDict)
         for j in range(2*n**2):
 
             zeroClauses = getZeroClause(clausesDict)
             
             if zeroClauses:
-                zeroClause = zeroClauses.pop()
+                zeroClause = random.choice(zeroClauses)
                 literal = random.choice(zeroClause)
 
                 literalBitDict = flipBit(literal, literalBitDict)
                 
-                literalPositions1, literalPositions2 = None, None
+                clausePositions = []
                 if literal in literalsNumToIdx:
-                    literalPositions1 = literalsNumToIdx[literal]
+                    clausePositions = literalsNumToIdx[literal]
                 if -literal in literalsNumToIdx:
-                    literalPositions2 = literalsNumToIdx[-literal]
+                    clausePositions+= literalsNumToIdx[-literal]
 
-                sys.exit() 
+                for clausePosition in clausePositions:
+                    clause = literalsList[clausePosition]
+                    if len(clause)==1:
+                        x = next(iter(clause))
+                        clausesDict[(x,)] = literalBitDict[x]
+                    else:
+                        x1, x2 = clause
+                        clausesDict[clause] = literalBitDict[x1] or literalBitDict[x2]
+            else:
+                return 1, literalBitDict, clausesDict
+
+    return 0, literalBitDict, clausesDict
 
 
 
@@ -55,6 +83,7 @@ if __name__=="__main__":
     p = Path.home()/"work/algorithms_illuminated/npHard/test_cases/local_search"
     fname = "2sat1.txt"
     fname = "input_beaunus_10_20.txt"
+    fname = "input_beaunus_11_40.txt"
     fname = p/fname
 
 
@@ -65,5 +94,9 @@ if __name__=="__main__":
     # pprint.pprint(literalBitDict)
     # pprint.pprint(clausesDict)
 
-    papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    print(f"success {sucess}")
+    print("bits")
+    print(literalBitDict)
+    pprint.pprint(clausesDict)
 
