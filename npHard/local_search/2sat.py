@@ -58,7 +58,6 @@ def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
             
             if zeroClauses:
                 zeroClause = zeroClauses.pop()
-                # print(f"zeroclause {zeroClause}")
                 literal = random.choice(zeroClause)
 
                 literalBitDict = flipBit(literal, literalBitDict)
@@ -70,31 +69,81 @@ def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
 
     return 0, literalBitDict, clausesDict
 
+def separatePosNegLiterals(literalBitDict):
+    literalsSet = set(literalBitDict.keys())
+    posLiterals = []
+    negLiterals = []
+    for literal in literalsSet:
+        if literal > 0:
+            posLiterals.append(literal)
+        else:
+            negLiterals.append(literal)
+    return posLiterals, negLiterals
+
+def selectSingleSignedLiterals(posLiterals, negLiterals):
+    posLiterals = set(posLiterals)
+    negLiterals = set(negLiterals)
+    singleSignedLiterals = []
+    
+    for posLiteral in posLiterals:
+        if -posLiteral not in negLiterals:
+            singleSignedLiterals.append(posLiteral)
+    
+    for negLiteral in negLiterals:
+       if -negLiteral not in posLiterals:
+           singleSignedLiterals.append(negLiteral)
+    return singleSignedLiterals
+    
+def removeRedundantLiterals(clausesDict, redundantLiterals):
+    redundantLiterals = set(redundantLiterals)
+    keys = list(clausesDict.keys()) 
+    for key in keys:
+        if len(key)==1:
+            x = next(iter(key))
+            if x in redundantLiterals:
+                clausesDict.pop(key)
+        else:
+            x1, x2 = key
+            if x1 in redundantLiterals or x2 in redundantLiterals:
+                clausesDict.pop(key)
+    return clausesDict
 
 
 if __name__=="__main__":
     p = Path.home()/"work/algorithms_illuminated/npHard/test_cases/local_search"
     fname = "small.txt"
     fname = "input_beaunus_1_2.txt"
-    fname = "input_beaunus_10_20.txt"
     fname = "input_beaunus_11_40.txt"
-    fname = "2sat1.txt"
     fname = "2sat2.txt"
+    fname = "2sat3.txt"
+    fname = "2sat4.txt"
+    fname = "2sat6.txt"
+    fname = "2sat5.txt"
     fname = "input_beaunus_13_80.txt"
     fname = "input_beaunus_23_1000.txt"
+    fname = "2sat1.txt"
+    fname = "input_beaunus_10_20.txt"
     fname = p/fname
 
 
     literalsList, literalsNumToIdx, literalBitDict, clausesDict = getSetAndList(fname)
-    # bitToClauseDict = swapKeyValClausesDict(clausesDict)
-    # pprint.pprint(literalsNumToIdx)
-    # print(literalsList)
-    # pprint.pprint(literalBitDict)
-    # pprint.pprint(clausesDict)
+    
 
+    posLiterals, negLiterals = separatePosNegLiterals(literalBitDict)
+    # print(posLiterals)
+    # print(negLiterals)
+    redundantLiterals = selectSingleSignedLiterals(posLiterals, negLiterals)
+    # print(redundantLiterals)
+    print(f"literalsBitDict len {len(literalBitDict)}, redundanr len: {len(redundantLiterals)}")
+    print(f"before clausesdict len: {len(clausesDict)}")
+    clausesDict = removeRedundantLiterals(clausesDict, redundantLiterals)
+    print(f"after clausesdict len: {len(clausesDict)}")
+    
+    
     sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
     print(f"success {sucess}")
-    print("bits")
-    print(literalBitDict)
-    pprint.pprint(clausesDict)
+    
+    # print("bits")
+    # print(literalBitDict)
+    # pprint.pprint(clausesDict)
 
