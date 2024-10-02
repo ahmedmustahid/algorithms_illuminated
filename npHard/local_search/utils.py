@@ -52,6 +52,7 @@ def getSetAndList(fname):
         for i,line in enumerate(f):
             if i==0:
                 totalNum = int(line)
+                continue
             x = list(map(int, line.split()))
             if len(x)==1:
                 x = next(iter(x))
