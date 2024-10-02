@@ -13,6 +13,10 @@ def randomLiteralBit(literalBitDict, clausesDict):
             literalBitDict[key] = random.choice((0,1))
             if -key in literalBitDict:
                 literalBitDict[-key] = 0 if literalBitDict[key]==1 else 1
+        elif -key not in literalBitDict:
+                literalBitDict[key] = random.choice((0,1))
+
+
     
     for key in clausesDict.keys():
         if len(key)==1:
@@ -44,11 +48,11 @@ def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
     for i in range(logn):
         literalBitDict, clausesDict = randomLiteralBit(literalBitDict, clausesDict)
         for j in range(2*n**2):
-
             zeroClauses = getZeroClause(clausesDict)
             
             if zeroClauses:
-                zeroClause = random.choice(zeroClauses)
+                zeroClause = zeroClauses.pop()
+                print(f"zeroclause {zeroClause}")
                 literal = random.choice(zeroClause)
 
                 literalBitDict = flipBit(literal, literalBitDict)
@@ -59,6 +63,7 @@ def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
                 if -literal in literalsNumToIdx:
                     clausePositions+= literalsNumToIdx[-literal]
 
+                clausePositions = set(clausePositions)
                 for clausePosition in clausePositions:
                     clause = literalsList[clausePosition]
                     if len(clause)==1:
@@ -84,6 +89,7 @@ if __name__=="__main__":
     fname = "2sat1.txt"
     fname = "input_beaunus_10_20.txt"
     fname = "input_beaunus_11_40.txt"
+    fname = "input_beaunus_1_2.txt"
     fname = p/fname
 
 
