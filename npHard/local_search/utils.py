@@ -43,7 +43,7 @@ def getNumSet(fname: str):
 
 def getSetAndList(fname):
     literalsList = []
-    clausesDict = CustomDict()
+    clausesDict = dict()
     literalsNumToIdx = defaultdict(list)
     literalTobitDict = {}
     idx = 0
