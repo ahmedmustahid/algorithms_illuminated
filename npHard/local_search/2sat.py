@@ -51,14 +51,19 @@ def evaluateClausesFromNewBitDict(clausePositions, literalsList, literalBitDict)
 def papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict):
     n = len(literalsList)
     logn = math.ceil(math.log2(n))
-
     for i in range(logn):
         clausesDict = randomClausesBit(clausesDict)
+        zeroClausesSet = set()
         for j in range(2*n**2):
             zeroClauses = getZeroClause(clausesDict)
             
             if zeroClauses:
                 zeroClause = zeroClauses.pop()
+                if zeroClause not in zeroClausesSet:
+                    zeroClausesSet.add(zeroClause)
+                else:
+                    break
+                # print(f"popped {zeroClause}")
                 literal = random.choice(zeroClause)
 
                 literalBitDict = flipBit(literal, literalBitDict)
@@ -109,33 +114,54 @@ def removeRedundantLiterals(clausesDict, redundantLiterals):
                 clausesDict.pop(key)
     return clausesDict
 
+def getLiteralsList(clausesDict, literalBitDict):
+    literalsList = []
+    literalsNumToIdx = defaultdict(list)
+
+    for idx, clause in enumerate(clausesDict):
+        literalsList.append(clause)
+        k1,k2 = clause
+        if k1 in literalBitDict:
+            literalsNumToIdx[k1].append(idx)
+        if k2 in literalBitDict:
+            literalsNumToIdx[k2].append(idx)
+    
+    return literalsList, literalsNumToIdx
 
 if __name__=="__main__":
     p = Path.home()/"work/algorithms_illuminated/npHard/test_cases/local_search"
     fname = "small.txt"
     fname = "input_beaunus_1_2.txt"
     fname = "input_beaunus_11_40.txt"
-    fname = "2sat2.txt"
-    fname = "2sat3.txt"
-    fname = "2sat4.txt"
-    fname = "2sat6.txt"
-    fname = "2sat5.txt"
     fname = "input_beaunus_13_80.txt"
     fname = "input_beaunus_23_1000.txt"
-    fname = "2sat1.txt"
-    fname = "input_beaunus_10_20.txt"
-    fname = "input_beaunus_28_4000.txt"
+    fname = "2sat1.txt" #1
+    fname = "2sat2.txt" #0
+    fname = "2sat3.txt" #0
+    fname = "2sat4.txt" #0
+    fname = "2sat6.txt" #0
+    fname = "2sat5.txt" #0
+    # fname = "input_beaunus_10_20.txt"
+    # fname = "input_beaunus_28_4000.txt"
+
     fname = p/fname
 
 
     literalsList, literalsNumToIdx, literalBitDict, clausesDict = getSetAndList(fname)
-    
 
     clausesDict, literalBitDict = getReducedClauses(literalBitDict=literalBitDict, clausesDict=clausesDict)
-    
-    
-    sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
-    print(f"success {sucess}")
+    literalsList, literalsNumToIdx = getLiteralsList(clausesDict,literalBitDict)
+
+    repetionNum = 100 
+    successes = []
+    success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    print(f"success {success}")
+
+    # for i in range(repetionNum):
+    #     success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    #     # sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    #     successes.append(success)
+    # print(f"success {max(successes, key = successes.count)}")
     
     # print("bits")
     # print(literalBitDict)
