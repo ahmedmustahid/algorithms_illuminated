@@ -139,8 +139,8 @@ if __name__=="__main__":
     fname = "2sat2.txt" #0
     fname = "2sat3.txt" #0
     fname = "2sat4.txt" #0
-    fname = "2sat6.txt" #0
-    fname = "2sat5.txt" #0
+    # fname = "2sat6.txt" #0
+    # fname = "2sat5.txt" #0
     # fname = "input_beaunus_10_20.txt"
     # fname = "input_beaunus_28_4000.txt"
 
@@ -152,16 +152,19 @@ if __name__=="__main__":
     clausesDict, literalBitDict = getReducedClauses(literalBitDict=literalBitDict, clausesDict=clausesDict)
     literalsList, literalsNumToIdx = getLiteralsList(clausesDict,literalBitDict)
 
-    repetionNum = 100 
+    repetionNum = 50 
     successes = []
-    success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
-    print(f"success {success}")
+    # success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+    # print(f"success {success}")
 
-    # for i in range(repetionNum):
-    #     success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
-    #     # sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
-    #     successes.append(success)
-    # print(f"success {max(successes, key = successes.count)}")
+    for l in range(repetionNum):
+        success, _ , _ =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+        # sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
+        print(f"success {success}")
+        successes.append(success)
+        print(f"max success {max(successes, key = successes.count)}")
+        print(f"repaet {l}")
+    print(f"final max success {max(successes, key = successes.count)}")
     
     # print("bits")
     # print(literalBitDict)
