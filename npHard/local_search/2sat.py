@@ -3,6 +3,7 @@ from collections import defaultdict
 import math
 import random
 from utils import getSetAndList, swapKeyValClausesDict
+from removeRedundants import getReducedClauses
 from pathlib import Path
 import pprint
 import sys
@@ -123,21 +124,14 @@ if __name__=="__main__":
     fname = "input_beaunus_23_1000.txt"
     fname = "2sat1.txt"
     fname = "input_beaunus_10_20.txt"
+    fname = "input_beaunus_28_4000.txt"
     fname = p/fname
 
 
     literalsList, literalsNumToIdx, literalBitDict, clausesDict = getSetAndList(fname)
     
 
-    posLiterals, negLiterals = separatePosNegLiterals(literalBitDict)
-    # print(posLiterals)
-    # print(negLiterals)
-    redundantLiterals = selectSingleSignedLiterals(posLiterals, negLiterals)
-    # print(redundantLiterals)
-    print(f"literalsBitDict len {len(literalBitDict)}, redundanr len: {len(redundantLiterals)}")
-    print(f"before clausesdict len: {len(clausesDict)}")
-    clausesDict = removeRedundantLiterals(clausesDict, redundantLiterals)
-    print(f"after clausesdict len: {len(clausesDict)}")
+    clausesDict, literalBitDict = getReducedClauses(literalBitDict=literalBitDict, clausesDict=clausesDict)
     
     
     sucess, literalBitDict, clausesDict =papadimitrou(literalsList, literalsNumToIdx, literalBitDict, clausesDict)
